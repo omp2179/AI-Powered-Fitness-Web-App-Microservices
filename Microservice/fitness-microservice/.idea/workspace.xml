@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9fae07a8-0dbd-421e-ae79-fa70398da8c7" name="Changes" comment="refactor: clean up application.yaml formatting and update workspace.xml task references" />
+    <list default="true" id="9fae07a8-0dbd-421e-ae79-fa70398da8c7" name="Changes" comment="refactor: update workspace.xml to clean up formatting and adjust task references">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -22,9 +24,13 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
   <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "history": [
+    {
+      "author": "omp2179"
+    }
+  ],
   "lastFilter": {
-    "state": "OPEN",
-    "assignee": "omp2179"
+    "author": "omp2179"
   }
 }]]></component>
   <component name="GithubPullRequestsUISettings"><![CDATA[{
@@ -60,6 +66,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -96,7 +103,7 @@
       <option name="presentableId" value="Default" />
       <updated>1754564935581</updated>
       <workItem from="1754564937016" duration="1994000" />
-      <workItem from="1754568016484" duration="2850000" />
+      <workItem from="1754568016484" duration="3484000" />
     </task>
     <task id="LOCAL-00001" summary="initialize userservice microservice with basic configuration and user model">
       <option name="closed" value="true" />
@@ -146,7 +153,15 @@
       <option name="project" value="LOCAL" />
       <updated>1754570159802</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="refactor: update workspace.xml to clean up formatting and adjust task references">
+      <option name="closed" value="true" />
+      <created>1754570926071</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1754570926071</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -199,6 +214,7 @@
     <MESSAGE value="initialize userservice microservice with basic configuration and user model" />
     <MESSAGE value="refactor: rename application.properties to application.yaml and update configuration" />
     <MESSAGE value="refactor: clean up application.yaml formatting and update workspace.xml task references" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor: clean up application.yaml formatting and update workspace.xml task references" />
+    <MESSAGE value="refactor: update workspace.xml to clean up formatting and adjust task references" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor: update workspace.xml to clean up formatting and adjust task references" />
   </component>
 </project>

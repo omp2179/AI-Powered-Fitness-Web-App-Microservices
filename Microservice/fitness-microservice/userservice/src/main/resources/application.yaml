@@ -2,7 +2,7 @@ spring:
   application:
     name: userservice
   datasource:
-    url:jdbc: postgresql://localhost:5432/fitness_user_db
+    url:  jdbc:postgresql://localhost:5432/fitness_user_db
     username: postgres
     password: pgsql
 

@@ -22,7 +22,5 @@ public class RegisterRequest {
     private String lastName;
 
 
-    public UserResponse register(@Valid RegisterRequest request) {
 
-    }
 }

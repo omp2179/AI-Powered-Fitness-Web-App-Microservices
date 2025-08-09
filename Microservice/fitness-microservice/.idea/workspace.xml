@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9fae07a8-0dbd-421e-ae79-fa70398da8c7" name="Changes" comment="refactor: update workspace.xml to enhance task management and adjust panel widths">
-      <change afterPath="$PROJECT_DIR$/userservice/src/main/java/com/fitness/userservice/dto/RegisterRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/userservice/src/main/java/com/fitness/userservice/dto/UserResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/userservice/src/main/java/com/fitness/userservice/service/Usersevice.java" afterDir="false" />
+    <list default="true" id="9fae07a8-0dbd-421e-ae79-fa70398da8c7" name="Changes" comment="feat: implement user registration functionality with validation">
+      <change afterPath="$PROJECT_DIR$/userservice/src/main/java/com/fitness/userservice/repository/UserRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userservice/src/main/java/com/fitness/userservice/controller/Usercontroller.java" beforeDir="false" afterPath="$PROJECT_DIR$/userservice/src/main/java/com/fitness/userservice/controller/Usercontroller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/userservice/src/main/java/com/fitness/userservice/dto/RegisterRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/userservice/src/main/java/com/fitness/userservice/dto/RegisterRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/userservice/src/main/java/com/fitness/userservice/service/Usersevice.java" beforeDir="false" afterPath="$PROJECT_DIR$/userservice/src/main/java/com/fitness/userservice/service/Usersevice.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,7 +117,7 @@
       <updated>1754564935581</updated>
       <workItem from="1754564937016" duration="1994000" />
       <workItem from="1754568016484" duration="5460000" />
-      <workItem from="1754762553794" duration="2094000" />
+      <workItem from="1754762553794" duration="3751000" />
     </task>
     <task id="LOCAL-00001" summary="initialize userservice microservice with basic configuration and user model">
       <option name="closed" value="true" />
@@ -216,7 +215,15 @@
       <option name="project" value="LOCAL" />
       <updated>1754762786005</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="feat: implement user registration functionality with validation">
+      <option name="closed" value="true" />
+      <created>1754764871740</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1754764871740</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -271,6 +278,7 @@
     <MESSAGE value="refactor: clean up application.yaml formatting and update workspace.xml task references" />
     <MESSAGE value="refactor: update workspace.xml to clean up formatting and adjust task references" />
     <MESSAGE value="refactor: update workspace.xml to enhance task management and adjust panel widths" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor: update workspace.xml to enhance task management and adjust panel widths" />
+    <MESSAGE value="feat: implement user registration functionality with validation" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: implement user registration functionality with validation" />
   </component>
 </project>

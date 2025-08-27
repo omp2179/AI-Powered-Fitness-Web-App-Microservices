@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9fae07a8-0dbd-421e-ae79-fa70398da8c7" name="Changes" comment="fix: add missing newline at end of pom.xml and update workspace.xml for change tracking">
+    <list default="true" id="9fae07a8-0dbd-421e-ae79-fa70398da8c7" name="Changes" comment="feat: add activity service module and configure Maven wrapper">
+      <change afterPath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/model/Activity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/model/ActivityType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userservice/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/userservice/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/activityservice/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/activityservice/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/userservice/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/userservice/src/main/resources/application.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,6 +56,9 @@
   &quot;associatedIndex&quot;: 1
 }</component>
   <component name="ProjectId" id="30xMn22tg6dYfhVXrwyw62cYRDx" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -83,6 +89,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.fitness.activityservice.model" />
       <recent name="com.fitness.userservice.dto" />
       <recent name="com.fitness.userservice.model" />
     </key>
@@ -127,7 +134,7 @@
       <workItem from="1754830591313" duration="10938000" />
       <workItem from="1755415149475" duration="410000" />
       <workItem from="1755611609300" duration="2374000" />
-      <workItem from="1756208490810" duration="520000" />
+      <workItem from="1756208490810" duration="8220000" />
     </task>
     <task id="LOCAL-00001" summary="initialize userservice microservice with basic configuration and user model">
       <option name="closed" value="true" />
@@ -265,7 +272,15 @@
       <option name="project" value="LOCAL" />
       <updated>1754769362430</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="feat: add activity service module and configure Maven wrapper">
+      <option name="closed" value="true" />
+      <created>1756209316976</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1756209316976</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -322,6 +337,7 @@
     <MESSAGE value="refactor: update workspace.xml to enhance task management and adjust panel widths" />
     <MESSAGE value="feat: implement user registration functionality with validation" />
     <MESSAGE value="feat: update user registration endpoint and adjust compiler settings" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: update user registration endpoint and adjust compiler settings" />
+    <MESSAGE value="feat: add activity service module and configure Maven wrapper" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add activity service module and configure Maven wrapper" />
   </component>
 </project>

@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9fae07a8-0dbd-421e-ae79-fa70398da8c7" name="Changes" comment="feat: add activity service module and configure Maven wrapper">
-      <change afterPath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/model/Activity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/model/ActivityType.java" afterDir="false" />
+    <list default="true" id="9fae07a8-0dbd-421e-ae79-fa70398da8c7" name="Changes" comment="feat: add Activity and ActivityType models, and configure application properties for activity service">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/activityservice/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/activityservice/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userservice/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/userservice/src/main/resources/application.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,30 +59,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;Spring Boot.UserserviceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Java_RnD/FitnessWebApp/Microservice/fitness-microservice&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.annotationProcessors&quot;,
-    &quot;settings.editor.splitter.proportion&quot;: &quot;0.27726808&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Spring Boot.ActivityserviceApplication.executor": "Run",
+    "Spring Boot.UserserviceApplication.executor": "Run",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Java_RnD/FitnessWebApp/Microservice/fitness-microservice",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "reference.projectsettings.compiler.annotationProcessors",
+    "settings.editor.splitter.proportion": "0.27726808",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.fitness.activityservice.model" />
@@ -94,7 +91,7 @@
       <recent name="com.fitness.userservice.model" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.UserserviceApplication">
+  <component name="RunManager" selected="Spring Boot.ActivityserviceApplication">
     <configuration name="ActivityserviceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="activityservice" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.fitness.activityservice.ActivityserviceApplication" />
@@ -134,7 +131,7 @@
       <workItem from="1754830591313" duration="10938000" />
       <workItem from="1755415149475" duration="410000" />
       <workItem from="1755611609300" duration="2374000" />
-      <workItem from="1756208490810" duration="8220000" />
+      <workItem from="1756208490810" duration="8559000" />
     </task>
     <task id="LOCAL-00001" summary="initialize userservice microservice with basic configuration and user model">
       <option name="closed" value="true" />
@@ -280,7 +277,15 @@
       <option name="project" value="LOCAL" />
       <updated>1756209316976</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="feat: add Activity and ActivityType models, and configure application properties for activity service">
+      <option name="closed" value="true" />
+      <created>1756310178775</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1756310178775</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -338,6 +343,7 @@
     <MESSAGE value="feat: implement user registration functionality with validation" />
     <MESSAGE value="feat: update user registration endpoint and adjust compiler settings" />
     <MESSAGE value="feat: add activity service module and configure Maven wrapper" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: add activity service module and configure Maven wrapper" />
+    <MESSAGE value="feat: add Activity and ActivityType models, and configure application properties for activity service" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add Activity and ActivityType models, and configure application properties for activity service" />
   </component>
 </project>

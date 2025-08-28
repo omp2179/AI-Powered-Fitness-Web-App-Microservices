@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9fae07a8-0dbd-421e-ae79-fa70398da8c7" name="Changes" comment="feat: add MongoDB configuration and update ActivityController to use RequestBody">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/activityservice/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/activityservice/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eureka/src/main/java/com/fitness/eureka/EurekaApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/eureka/src/main/java/com/fitness/eureka/EurekaApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eureka/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/eureka/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userservice/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/userservice/pom.xml" afterDir="false" />
-    </list>
+    <list default="true" id="9fae07a8-0dbd-421e-ae79-fa70398da8c7" name="Changes" comment="feat: migrate application.properties to application.yml and configure Eureka server" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -161,7 +155,7 @@
       <workItem from="1755415149475" duration="410000" />
       <workItem from="1755611609300" duration="2374000" />
       <workItem from="1756208490810" duration="15197000" />
-      <workItem from="1756388668073" duration="1278000" />
+      <workItem from="1756388668073" duration="1618000" />
     </task>
     <task id="LOCAL-00001" summary="initialize userservice microservice with basic configuration and user model">
       <option name="closed" value="true" />
@@ -347,7 +341,15 @@
       <option name="project" value="LOCAL" />
       <updated>1756388766208</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="feat: migrate application.properties to application.yml and configure Eureka server">
+      <option name="closed" value="true" />
+      <created>1756390141633</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1756390141633</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -408,6 +410,7 @@
     <MESSAGE value="feat: add Activity and ActivityType models, and configure application properties for activity service" />
     <MESSAGE value="feat: update workspace configuration for Activity and ActivityType models" />
     <MESSAGE value="feat: add MongoDB configuration and update ActivityController to use RequestBody" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: add MongoDB configuration and update ActivityController to use RequestBody" />
+    <MESSAGE value="feat: migrate application.properties to application.yml and configure Eureka server" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: migrate application.properties to application.yml and configure Eureka server" />
   </component>
 </project>

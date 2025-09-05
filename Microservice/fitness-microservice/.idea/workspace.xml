@@ -5,7 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9fae07a8-0dbd-421e-ae79-fa70398da8c7" name="Changes" comment="feat: migrate application.properties to application.yml and configure Eureka server">
+      <change afterPath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/config/WebClientConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/activityservice/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/activityservice/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,6 +73,7 @@
     "RequestMappingsPanelWidth0": "75",
     "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "Spring Boot.ActivityserviceApplication.executor": "Run",
     "Spring Boot.EurekaApplication.executor": "Run",
@@ -171,6 +174,7 @@
       <workItem from="1755611609300" duration="2374000" />
       <workItem from="1756208490810" duration="15197000" />
       <workItem from="1756388668073" duration="2277000" />
+      <workItem from="1757072410282" duration="2951000" />
     </task>
     <task id="LOCAL-00001" summary="initialize userservice microservice with basic configuration and user model">
       <option name="closed" value="true" />
@@ -372,7 +376,15 @@
       <option name="project" value="LOCAL" />
       <updated>1756390387058</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="feat: migrate application.properties to application.yml and configure Eureka server">
+      <option name="closed" value="true" />
+      <created>1757072535657</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1757072535657</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

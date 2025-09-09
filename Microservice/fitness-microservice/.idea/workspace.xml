@@ -4,10 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9fae07a8-0dbd-421e-ae79-fa70398da8c7" name="Changes" comment="feat: migrate application.properties to application.yml and configure Eureka server">
-      <change afterPath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/config/WebClientConfig.java" afterDir="false" />
+    <list default="true" id="9fae07a8-0dbd-421e-ae79-fa70398da8c7" name="Changes" comment="feat: add WebClient configuration for user service and include Spring WebFlux dependency">
+      <change afterPath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/service/UserValidationService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/activityservice/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/activityservice/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/service/ActivityService.java" beforeDir="false" afterPath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/service/ActivityService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/userservice/src/main/java/com/fitness/userservice/controller/Usercontroller.java" beforeDir="false" afterPath="$PROJECT_DIR$/userservice/src/main/java/com/fitness/userservice/controller/Usercontroller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/userservice/src/main/java/com/fitness/userservice/service/Usersevice.java" beforeDir="false" afterPath="$PROJECT_DIR$/userservice/src/main/java/com/fitness/userservice/service/Usersevice.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,7 +90,7 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "run.configurations.included.in.services": "true",
-    "settings.editor.selected.configurable": "reference.projectsettings.compiler.annotationProcessors",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "settings.editor.splitter.proportion": "0.27726808",
     "vue.rearranger.settings.migration": "true"
   }
@@ -125,7 +127,7 @@
       </map>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.EurekaApplication">
+  <component name="RunManager" selected="Spring Boot.UserserviceApplication">
     <configuration name="ActivityserviceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="activityservice" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.fitness.activityservice.ActivityserviceApplication" />
@@ -174,7 +176,9 @@
       <workItem from="1755611609300" duration="2374000" />
       <workItem from="1756208490810" duration="15197000" />
       <workItem from="1756388668073" duration="2277000" />
-      <workItem from="1757072410282" duration="2951000" />
+      <workItem from="1757072410282" duration="3130000" />
+      <workItem from="1757138523666" duration="5699000" />
+      <workItem from="1757393532800" duration="3079000" />
     </task>
     <task id="LOCAL-00001" summary="initialize userservice microservice with basic configuration and user model">
       <option name="closed" value="true" />
@@ -384,7 +388,15 @@
       <option name="project" value="LOCAL" />
       <updated>1757072535657</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="feat: add WebClient configuration for user service and include Spring WebFlux dependency">
+      <option name="closed" value="true" />
+      <created>1757095375568</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1757095375568</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -446,6 +458,7 @@
     <MESSAGE value="feat: update workspace configuration for Activity and ActivityType models" />
     <MESSAGE value="feat: add MongoDB configuration and update ActivityController to use RequestBody" />
     <MESSAGE value="feat: migrate application.properties to application.yml and configure Eureka server" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: migrate application.properties to application.yml and configure Eureka server" />
+    <MESSAGE value="feat: add WebClient configuration for user service and include Spring WebFlux dependency" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add WebClient configuration for user service and include Spring WebFlux dependency" />
   </component>
 </project>

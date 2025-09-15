@@ -4,12 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9fae07a8-0dbd-421e-ae79-fa70398da8c7" name="Changes" comment="feat: add WebClient configuration for user service and include Spring WebFlux dependency">
-      <change afterPath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/service/UserValidationService.java" afterDir="false" />
+    <list default="true" id="9fae07a8-0dbd-421e-ae79-fa70398da8c7" name="Changes" comment="feat: implement user validation service and integrate with activity tracking">
+      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.agent.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.edit.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/service/ActivityService.java" beforeDir="false" afterPath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/service/ActivityService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userservice/src/main/java/com/fitness/userservice/controller/Usercontroller.java" beforeDir="false" afterPath="$PROJECT_DIR$/userservice/src/main/java/com/fitness/userservice/controller/Usercontroller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userservice/src/main/java/com/fitness/userservice/service/Usersevice.java" beforeDir="false" afterPath="$PROJECT_DIR$/userservice/src/main/java/com/fitness/userservice/service/Usersevice.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,6 +78,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Spring Boot.ActivityserviceApplication.executor": "Run",
     "Spring Boot.EurekaApplication.executor": "Run",
     "Spring Boot.UserserviceApplication.executor": "Run",
@@ -135,6 +137,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="AiserviceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="aiservice" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.fitness.aiservice.AiserviceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="EurekaApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="eureka" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.fitness.eureka.EurekaApplication" />
@@ -178,7 +187,8 @@
       <workItem from="1756388668073" duration="2277000" />
       <workItem from="1757072410282" duration="3130000" />
       <workItem from="1757138523666" duration="5699000" />
-      <workItem from="1757393532800" duration="3079000" />
+      <workItem from="1757393532800" duration="3600000" />
+      <workItem from="1757940097280" duration="2022000" />
     </task>
     <task id="LOCAL-00001" summary="initialize userservice microservice with basic configuration and user model">
       <option name="closed" value="true" />
@@ -396,7 +406,15 @@
       <option name="project" value="LOCAL" />
       <updated>1757095375568</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="feat: implement user validation service and integrate with activity tracking">
+      <option name="closed" value="true" />
+      <created>1757397883790</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1757397883790</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -459,6 +477,7 @@
     <MESSAGE value="feat: add MongoDB configuration and update ActivityController to use RequestBody" />
     <MESSAGE value="feat: migrate application.properties to application.yml and configure Eureka server" />
     <MESSAGE value="feat: add WebClient configuration for user service and include Spring WebFlux dependency" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: add WebClient configuration for user service and include Spring WebFlux dependency" />
+    <MESSAGE value="feat: implement user validation service and integrate with activity tracking" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: implement user validation service and integrate with activity tracking" />
   </component>
 </project>

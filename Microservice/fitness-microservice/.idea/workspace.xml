@@ -4,11 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9fae07a8-0dbd-421e-ae79-fa70398da8c7" name="Changes" comment="fix: correct formatting in application.yml for spring application name and eureka service URL">
-      <change afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/config/MongoConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/controller/RecommandationController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/model/Recommendation.java" afterDir="false" />
+    <list default="true" id="9fae07a8-0dbd-421e-ae79-fa70398da8c7" name="Changes" comment="feat: add MongoDB configuration and recommendation model with controller">
+      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.ask.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.ask2agent.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/repository/RecommendationRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/service/RecommandationService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/controller/RecommandationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/controller/RecommandationController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,8 +21,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -98,11 +100,11 @@
 }</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.fitness.aiservice.service" />
       <recent name="com.fitness.activityservice.service" />
       <recent name="com.fitness.activityservice.dto" />
       <recent name="com.fitness.activityservice.model" />
       <recent name="com.fitness.userservice.dto" />
-      <recent name="com.fitness.userservice.model" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -189,7 +191,9 @@
       <workItem from="1757138523666" duration="5699000" />
       <workItem from="1757393532800" duration="3600000" />
       <workItem from="1757940097280" duration="3721000" />
-      <workItem from="1758360924495" duration="41000" />
+      <workItem from="1758360924495" duration="425000" />
+      <workItem from="1758955370404" duration="1566000" />
+      <workItem from="1760188641127" duration="2868000" />
     </task>
     <task id="LOCAL-00001" summary="initialize userservice microservice with basic configuration and user model">
       <option name="closed" value="true" />
@@ -439,7 +443,15 @@
       <option name="project" value="LOCAL" />
       <updated>1757942692097</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="feat: add MongoDB configuration and recommendation model with controller">
+      <option name="closed" value="true" />
+      <created>1758389846068</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1758389846068</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -506,6 +518,7 @@
     <MESSAGE value="feat: update project configuration for aiservice and add migration state services" />
     <MESSAGE value="feat: initialize Aiservice project with Maven setup and basic configuration" />
     <MESSAGE value="fix: correct formatting in application.yml for spring application name and eureka service URL" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: correct formatting in application.yml for spring application name and eureka service URL" />
+    <MESSAGE value="feat: add MongoDB configuration and recommendation model with controller" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add MongoDB configuration and recommendation model with controller" />
   </component>
 </project>

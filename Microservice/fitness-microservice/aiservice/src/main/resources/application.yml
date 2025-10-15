@@ -6,10 +6,26 @@ spring:
       uri: mongodb://localhost:27017/airecommendationfitness
       database: airecommendationfitness
 
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: activity-processor-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.use.type.headers: false
+        spring.json.value.default.type: com.fitness.aiservice.model.Activity
+        spring.json.trusted.packages: "*"
+
 eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
+
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
+    instanceId: ${spring.application.name}:${server.port}
 
 server:
   port: 8083

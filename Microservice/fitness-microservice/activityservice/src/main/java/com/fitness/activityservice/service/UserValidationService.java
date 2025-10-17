@@ -13,15 +13,19 @@ public class UserValidationService {
     private final WebClient userServiceWebClient;
 
     public Boolean validateUser(String userId) {
-        log.info("Validating UserId: "+userId);
+        log.info("[UserValidation] GET /api/users/{}/validate via Eureka (service=USERSERVICE)", userId);
         try {
-            return userServiceWebClient.get()
+            Boolean result = userServiceWebClient.get()
                     .uri("/api/users/{userId}/validate", userId)
                     .retrieve()
                     .bodyToMono(Boolean.class)
                     .block();
+            log.info("[UserValidation] Response: {}", result);
+            return result;
         } catch (WebClientResponseException e) {
-            e.printStackTrace();
+            log.error("[UserValidation] HTTP {} from USERSERVICE for userId={}, body={}", e.getRawStatusCode(), userId, e.getResponseBodyAsString(), e);
+        } catch (Exception e) {
+            log.error("[UserValidation] Error calling USERSERVICE for userId={}: {}", userId, e.getMessage(), e);
         }
         return false;
     }

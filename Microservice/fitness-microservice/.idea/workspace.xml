@@ -4,16 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9fae07a8-0dbd-421e-ae79-fa70398da8c7" name="Changes" comment="feat: add spring-kafka dependency and rename RecommandationController to RecommendationController">
-      <change afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/model/Activity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/model/ActivityType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/service/ActivityMessageListener.java" afterDir="false" />
+    <list default="true" id="9fae07a8-0dbd-421e-ae79-fa70398da8c7" name="Changes" comment="feat: add Activity model, service, and Kafka listener for activity processing">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/service/ActivityService.java" beforeDir="false" afterPath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/service/ActivityService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/activityservice/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/activityservice/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/aiservice/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/aiservice/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/service/ActivityMessageListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/service/ActivityMessageListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/aiservice/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/aiservice/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userservice/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/userservice/src/main/resources/application.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,6 +72,8 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Notification.DisplayName-DoNotAsk-DatabaseConfigFileWatcher.found": "New/updated database configurations found",
+    "Notification.DoNotAsk-DatabaseConfigFileWatcher.found": "true",
     "RequestMappingsPanelOrder0": "0",
     "RequestMappingsPanelOrder1": "1",
     "RequestMappingsPanelWidth0": "75",
@@ -212,7 +208,8 @@
       <workItem from="1760355324589" duration="145000" />
       <workItem from="1760355530036" duration="2757000" />
       <workItem from="1760509352221" duration="1276000" />
-      <workItem from="1760527172042" duration="4840000" />
+      <workItem from="1760527172042" duration="4906000" />
+      <workItem from="1760632574743" duration="5831000" />
     </task>
     <task id="LOCAL-00001" summary="initialize userservice microservice with basic configuration and user model">
       <option name="closed" value="true" />
@@ -486,7 +483,15 @@
       <option name="project" value="LOCAL" />
       <updated>1760528480739</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="feat: add Activity model, service, and Kafka listener for activity processing">
+      <option name="closed" value="true" />
+      <created>1760532060131</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1760532060131</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -556,6 +561,7 @@
     <MESSAGE value="feat: add MongoDB configuration and recommendation model with controller" />
     <MESSAGE value="feat: add recommendation service and controller with migration state XML files" />
     <MESSAGE value="feat: add spring-kafka dependency and rename RecommandationController to RecommendationController" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: add spring-kafka dependency and rename RecommandationController to RecommendationController" />
+    <MESSAGE value="feat: add Activity model, service, and Kafka listener for activity processing" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add Activity model, service, and Kafka listener for activity processing" />
   </component>
 </project>

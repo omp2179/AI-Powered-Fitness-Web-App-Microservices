@@ -17,6 +17,11 @@ spring:
         spring.json.value.default.type: com.fitness.aiservice.model.Activity
         spring.json.trusted.packages: "*"
 
+
+kafka:
+  topic:
+    activity: activity-events
+
 eureka:
   client:
     serviceUrl:

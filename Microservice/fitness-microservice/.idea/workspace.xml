@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9fae07a8-0dbd-421e-ae79-fa70398da8c7" name="Changes" comment="feat: add Activity model, service, and Kafka listener for activity processing">
-      <change beforePath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/ActivityserviceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/ActivityserviceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/config/WebClientConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/config/WebClientConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/controller/ActivityController.java" beforeDir="false" afterPath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/controller/ActivityController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/service/UserValidationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/service/UserValidationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/controller/RecommendationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/controller/RecommendationController.java" afterDir="false" />
+    <list default="true" id="9fae07a8-0dbd-421e-ae79-fa70398da8c7" name="Changes" comment="feat: add logging to ActivityController, RecommendationController, and services for improved traceability">
+      <change afterPath="$PROJECT_DIR$/userservice/src/main/java/com/fitness/userservice/controller/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/userservice/src/main/java/com/fitness/userservice/controller/Usercontroller.java" beforeDir="false" afterPath="$PROJECT_DIR$/userservice/src/main/java/com/fitness/userservice/controller/Usercontroller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/userservice/src/main/java/com/fitness/userservice/service/Usersevice.java" beforeDir="false" afterPath="$PROJECT_DIR$/userservice/src/main/java/com/fitness/userservice/service/Usersevice.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,7 +98,7 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "run.configurations.included.in.services": "true",
-    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
+    "settings.editor.selected.configurable": "com.github.copilot.settings.general.GeneralConfigurable",
     "settings.editor.splitter.proportion": "0.27726808",
     "vue.rearranger.settings.migration": "true"
   }
@@ -211,7 +210,7 @@
       <workItem from="1760355530036" duration="2757000" />
       <workItem from="1760509352221" duration="1276000" />
       <workItem from="1760527172042" duration="4906000" />
-      <workItem from="1760632574743" duration="9239000" />
+      <workItem from="1760632574743" duration="11816000" />
     </task>
     <task id="LOCAL-00001" summary="initialize userservice microservice with basic configuration and user model">
       <option name="closed" value="true" />
@@ -517,7 +516,15 @@
       <option name="project" value="LOCAL" />
       <updated>1760698261430</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="feat: add logging to ActivityController, RecommendationController, and services for improved traceability">
+      <option name="closed" value="true" />
+      <created>1760699061940</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1760699061940</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -588,6 +595,11 @@
     <MESSAGE value="feat: add recommendation service and controller with migration state XML files" />
     <MESSAGE value="feat: add spring-kafka dependency and rename RecommandationController to RecommendationController" />
     <MESSAGE value="feat: add Activity model, service, and Kafka listener for activity processing" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: add Activity model, service, and Kafka listener for activity processing" />
+    <MESSAGE value="feat: add logging to ActivityController, RecommendationController, and services for improved traceability" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add logging to ActivityController, RecommendationController, and services for improved traceability" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

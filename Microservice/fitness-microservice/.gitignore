@@ -1,0 +1,78 @@
+# Maven
+target/
+**/target/
+*.class
+*.war
+*.jar
+
+# Eclipse
+/.project
+/.classpath
+/.settings/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+out/
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Environment variables and secrets
+.env
+.env.*
+*.env
+local.properties
+credentials.properties
+secret-*.txt
+secrets.yml
+**/secrets/**
+
+# IDE workspace that may contain env vars or secrets
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/inspectionProfiles/
+
+# Application specific
+**/application*.yml
+**/application*.yaml
+!**/application*.example.yml
+!**/application*.example.yaml
+
+# Node
+node_modules/
+
+# Generated sources
+**/generated-sources/
+**/generated-test-sources/
+
+# Logs and temp
+tmp/
+temp/
+
+# OS generated files
+Desktop.ini
+
+# JetBrains local history
+.idea/.history/
+
+# JetBrains run configurations (if they contain envs)
+**/*.run.xml
+
+# Misc
+*.swp
+*~
+
+# Keep README, LICENSE, docs
+!README.md
+!LICENSE
+

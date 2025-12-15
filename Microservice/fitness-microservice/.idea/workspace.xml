@@ -4,15 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9fae07a8-0dbd-421e-ae79-fa70398da8c7" name="Changes" comment="feat: implement global exception handling and logging for user service">
-      <change afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/config/WebClientConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/service/ActivityAIService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/service/GeminiService.java" afterDir="false" />
+    <list default="true" id="9fae07a8-0dbd-421e-ae79-fa70398da8c7" name="Changes" comment="feat: implement ActivityAIService and GeminiService for AI-driven activity recommendations">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/aiservice/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/aiservice/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/service/ActivityMessageListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/service/ActivityMessageListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/aiservice/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/aiservice/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userservice/src/main/java/com/fitness/userservice/service/Usersevice.java" beforeDir="false" afterPath="$PROJECT_DIR$/userservice/src/main/java/com/fitness/userservice/service/Usersevice.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -152,10 +145,6 @@
       </method>
     </configuration>
     <configuration name="AiserviceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <envs>
-        <env name="GEMINI_API_KEY" value="AIzaSyDo3TUVNWfS61B5shXWjhgsmtoMfryAzVE" />
-        <env name="GEMINI_API_URL" value="https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent " />
-      </envs>
       <module name="aiservice" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.fitness.aiservice.AiserviceApplication" />
       <method v="2">
@@ -229,7 +218,7 @@
       <workItem from="1762278294066" duration="54000" />
       <workItem from="1762423821828" duration="668000" />
       <workItem from="1765799498557" duration="8520000" />
-      <workItem from="1765818027770" duration="4240000" />
+      <workItem from="1765818027770" duration="5026000" />
     </task>
     <task id="LOCAL-00001" summary="initialize userservice microservice with basic configuration and user model">
       <option name="closed" value="true" />
@@ -551,7 +540,15 @@
       <option name="project" value="LOCAL" />
       <updated>1760708684904</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="feat: implement ActivityAIService and GeminiService for AI-driven activity recommendations">
+      <option name="closed" value="true" />
+      <created>1765822495756</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1765822495756</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -624,7 +621,8 @@
     <MESSAGE value="feat: add Activity model, service, and Kafka listener for activity processing" />
     <MESSAGE value="feat: add logging to ActivityController, RecommendationController, and services for improved traceability" />
     <MESSAGE value="feat: implement global exception handling and logging for user service" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: implement global exception handling and logging for user service" />
+    <MESSAGE value="feat: implement ActivityAIService and GeminiService for AI-driven activity recommendations" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: implement ActivityAIService and GeminiService for AI-driven activity recommendations" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

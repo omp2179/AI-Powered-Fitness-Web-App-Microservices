@@ -35,3 +35,8 @@ eureka:
 server:
   port: 8083
 
+gemini:
+  api:
+    url: ${GEMINI_API_URL}
+    key: ${GEMINI_API_KEY}
+

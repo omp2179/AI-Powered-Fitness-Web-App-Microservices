@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fitness.aiservice.model.Activity;
 import com.fitness.aiservice.model.Recommendation;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -19,210 +20,82 @@ import java.util.List;
 @AllArgsConstructor
 public class ActivityAIService {
     private final GeminiService geminiService;
+    private static final String SERVICE_NAME = "[ActivityAIService]";
 
-    public Recommendation generateRecommendation(Activity activity) {
-        log.info("[ActivityAIService] Starting recommendation generation for activityId={}, userId={}, type={}",
-                activity.getId(), activity.getUserId(), activity.getType());
+    public void generateRecommendation(Activity activity) {
+        log.info("{} Starting recommendation generation for activityId={}, userId={}, type={}",
+                SERVICE_NAME, activity.getId(), activity.getUserId(), activity.getType());
+
 
         try {
-            log.debug("[ActivityAIService] Creating prompt for activity type: {}", activity.getType());
+            // Step 1: Validate activity data
+            log.debug("{} Validating activity data: type={}, duration={}, calories={}",
+                    SERVICE_NAME, activity.getType(), activity.getDuration(), activity.getCaloriesBurned());
+
+            if (activity.getType() == null || activity.getDuration() == null) {
+                log.error("{} Invalid activity data: type or duration is null", SERVICE_NAME);
+                throw new IllegalArgumentException("Activity type and duration are required");
+            }
+
+            // Step 2: Create prompt for activity
+            log.info("{} Creating prompt for activity type: {}", SERVICE_NAME, activity.getType());
             String prompt = createPromptForActivity(activity);
-            log.debug("[ActivityAIService] Prompt created successfully, length={} characters", prompt.length());
+            log.info("{} Prompt created successfully, length={} characters", SERVICE_NAME, prompt.length());
+            log.debug("{} Prompt preview: {}", SERVICE_NAME,
+                    prompt.length() > 300 ? prompt.substring(0, 300) + "..." : prompt);
 
-            log.info("[ActivityAIService] Requesting AI recommendations from Gemini service for activityId={}", activity.getId());
+            // Step 3: Request recommendations from Gemini
+            log.info("{} Requesting AI recommendations from Gemini service for activityId={}",
+                    SERVICE_NAME, activity.getId());
+
+            long startTime = System.currentTimeMillis();
             String aiResponse = geminiService.getRecommendations(prompt);
-            log.info("[ActivityAIService] Received AI response for activityId={}, responseLength={}",
-                    activity.getId(), aiResponse != null ? aiResponse.length() : 0);
-            log.debug("[ActivityAIService] AI Response content: {}", aiResponse);
+            long duration = System.currentTimeMillis() - startTime;
 
-            log.debug("[ActivityAIService] Processing AI response for activityId={}", activity.getId());
-            Recommendation recommendation = processAIResponse(activity, aiResponse);
+            if (aiResponse == null) {
+                log.warn("{} Received null AI response for activityId={}", SERVICE_NAME, activity.getId());
+                return;
+            }
 
-            log.info("[ActivityAIService] ✓ Successfully generated recommendation for activityId={}, userId={}, recommendationId={}",
-                    activity.getId(), activity.getUserId(), recommendation.getId());
+            log.info("{} ✓ Received AI response for activityId={}, responseLength={}, duration={}ms",
+                    SERVICE_NAME, activity.getId(), aiResponse.length(), duration);
+            log.debug("{} Response preview: {}", SERVICE_NAME,
+                    aiResponse.length() > 300 ? aiResponse.substring(0, 300) + "..." : aiResponse);
 
-            return recommendation;
+            // Step 4: Parse and process response
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode root = mapper.readTree(aiResponse);
+                log.debug("{} Successfully parsed AI response JSON structure", SERVICE_NAME);
+
+                // Validate response structure
+                if (root.has("candidates") && root.get("candidates").isArray()) {
+                    log.debug("{} Valid Gemini response structure detected", SERVICE_NAME);
+                } else {
+                    log.warn("{} Response structure does not match expected Gemini format", SERVICE_NAME);
+                }
+            } catch (Exception e) {
+                log.warn("{} Could not parse AI response as JSON: {}", SERVICE_NAME, e.getMessage());
+            }
+
+            log.info("{} ✓ Successfully processed recommendation for activityId={}, userId={}",
+                    SERVICE_NAME, activity.getId(), activity.getUserId());
+
+        } catch (IllegalArgumentException e) {
+            log.error("{} Validation error for activityId={}: {}", SERVICE_NAME, activity.getId(), e.getMessage());
+            throw e;
+
         } catch (Exception e) {
-            log.error("[ActivityAIService] ✗ Failed to generate recommendation for activityId={}, userId={}, type={}: {}",
-                    activity.getId(), activity.getUserId(), activity.getType(), e.getMessage(), e);
+            log.error("{} ✗ Failed to generate recommendation for activityId={}, userId={}, type={}: {}",
+                    SERVICE_NAME, activity.getId(), activity.getUserId(), activity.getType(), e.getMessage());
+            log.debug("{} Full stack trace for activityId={}:", SERVICE_NAME, activity.getId(), e);
             throw new RuntimeException("Failed to generate AI recommendation for activity: " + activity.getId(), e);
         }
     }
 
-    private Recommendation processAIResponse(Activity activity, String aiResponse) {
-        log.debug("[ActivityAIService] Processing AI response for activityId={}", activity.getId());
-
-        try {
-            log.debug("[ActivityAIService] Parsing JSON response for activityId={}", activity.getId());
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode rootNode = mapper.readTree(aiResponse);
-
-            log.debug("[ActivityAIService] Extracting text content from response structure for activityId={}", activity.getId());
-            JsonNode textNode = rootNode.path("candidates")
-                    .get(0)
-                    .path("content")
-                    .get("parts")
-                    .get(0)
-                    .path("text");
-
-            log.debug("[ActivityAIService] Cleaning JSON content (removing markdown code blocks) for activityId={}", activity.getId());
-            String jsonContent = textNode.asText()
-                    .replaceAll("```json\\n","")
-                    .replaceAll("\\n```","")
-                    .trim();
-
-            log.debug("[ActivityAIService] Cleaned JSON content for activityId={}: {}", activity.getId(), jsonContent);
-
-            log.debug("[ActivityAIService] Parsing cleaned JSON analysis for activityId={}", activity.getId());
-            JsonNode analysisJson = mapper.readTree(jsonContent);
-            JsonNode analysisNode = analysisJson.path("analysis");
-
-            log.debug("[ActivityAIService] Building full analysis text for activityId={}", activity.getId());
-            StringBuilder fullAnalysis = new StringBuilder();
-            addAnalysisSection(fullAnalysis, analysisNode, "overall", "Overall:");
-            addAnalysisSection(fullAnalysis, analysisNode, "pace", "Pace:");
-            addAnalysisSection(fullAnalysis, analysisNode, "heartRate", "Heart Rate:");
-            addAnalysisSection(fullAnalysis, analysisNode, "caloriesBurned", "Calories:");
-            log.debug("[ActivityAIService] Analysis text built, length={} characters", fullAnalysis.length());
-
-            log.debug("[ActivityAIService] Extracting improvements, suggestions, and safety guidelines for activityId={}", activity.getId());
-            List<String> improvements = extractImprovements(analysisJson.path("improvements"));
-            List<String> suggestions = extractSuggestions(analysisJson.path("suggestions"));
-            List<String> safety = extractSafetyGuidelines(analysisJson.path("safety"));
-
-            log.debug("[ActivityAIService] Extracted {} improvements, {} suggestions, {} safety guidelines for activityId={}",
-                    improvements.size(), suggestions.size(), safety.size(), activity.getId());
-
-            log.debug("[ActivityAIService] Building Recommendation object for activityId={}", activity.getId());
-            Recommendation recommendation = Recommendation.builder()
-                    .activityId(activity.getId())
-                    .userId(activity.getUserId())
-                    .id(activity.getType().toString())
-                    .recommendation(fullAnalysis.toString().trim())
-                    .improvements(improvements)
-                    .suggestions(suggestions)
-                    .safety(safety)
-                    .createdAt(LocalDateTime.now())
-                    .build();
-
-            log.info("[ActivityAIService] ✓ Successfully processed AI response for activityId={}", activity.getId());
-            return recommendation;
-
-        } catch (Exception e) {
-            log.error("[ActivityAIService] ✗ Error processing AI response for activityId={}: {}",
-                    activity.getId(), e.getMessage(), e);
-            log.warn("[ActivityAIService] Falling back to default recommendation for activityId={}", activity.getId());
-            return createDefaultRecommendation(activity);
-        }
-    }
-
-    private Recommendation createDefaultRecommendation(Activity activity) {
-        log.warn("[ActivityAIService] Creating default recommendation for activityId={}, userId={}, type={}",
-                activity.getId(), activity.getUserId(), activity.getType());
-
-        Recommendation defaultRecommendation = Recommendation.builder()
-                .activityId(activity.getId())
-                .userId(activity.getUserId())
-                .id(activity.getType().toString())
-                .recommendation("Unable to generate detailed analysis")
-                .improvements(Collections.singletonList("Continue with your current routine"))
-                .suggestions(Collections.singletonList("Consider consulting a fitness consultant"))
-                .safety(Arrays.asList(
-                        "Always warm up before exercise",
-                        "Stay hydrated",
-                        "Listen to your body"
-                ))
-                .createdAt(LocalDateTime.now())
-                .build();
-
-        log.info("[ActivityAIService] ✓ Default recommendation created for activityId={}", activity.getId());
-        return defaultRecommendation;
-    }
-
-    private List<String> extractSafetyGuidelines(JsonNode safetyNode) {
-        log.debug("[ActivityAIService] Extracting safety guidelines from JSON node");
-        List<String> safety = new ArrayList<>();
-
-        if (safetyNode.isArray()) {
-            safetyNode.forEach(item -> safety.add(item.asText()));
-            log.debug("[ActivityAIService] Extracted {} safety guidelines", safety.size());
-        } else {
-            log.debug("[ActivityAIService] Safety node is not an array or is missing");
-        }
-
-        if (safety.isEmpty()) {
-            log.debug("[ActivityAIService] No safety guidelines found, using default");
-        }
-
-        return safety.isEmpty() ?
-                Collections.singletonList("Follow general safety guidelines") :
-                safety;
-    }
-
-    private List<String> extractSuggestions(JsonNode suggestionsNode) {
-        log.debug("[ActivityAIService] Extracting suggestions from JSON node");
-        List<String> suggestions = new ArrayList<>();
-
-        if (suggestionsNode.isArray()) {
-            suggestionsNode.forEach(suggestion -> {
-                String workout = suggestion.path("workout").asText();
-                String description = suggestion.path("description").asText();
-                suggestions.add(String.format("%s: %s", workout, description));
-            });
-            log.debug("[ActivityAIService] Extracted {} suggestions", suggestions.size());
-        } else {
-            log.debug("[ActivityAIService] Suggestions node is not an array or is missing");
-        }
-
-        if (suggestions.isEmpty()) {
-            log.debug("[ActivityAIService] No suggestions found, using default");
-        }
-
-        return suggestions.isEmpty() ?
-                Collections.singletonList("No specific suggestions provided") :
-                suggestions;
-    }
-
-    private List<String> extractImprovements(JsonNode improvementsNode) {
-        log.debug("[ActivityAIService] Extracting improvements from JSON node");
-        List<String> improvements = new ArrayList<>();
-
-        if (improvementsNode.isArray()) {
-            improvementsNode.forEach(improvement -> {
-                String area = improvement.path("area").asText();
-                String detail = improvement.path("recommendation").asText();
-                improvements.add(String.format("%s: %s", area, detail));
-            });
-            log.debug("[ActivityAIService] Extracted {} improvements", improvements.size());
-        } else {
-            log.debug("[ActivityAIService] Improvements node is not an array or is missing");
-        }
-
-        if (improvements.isEmpty()) {
-            log.debug("[ActivityAIService] No improvements found, using default");
-        }
-
-        return improvements.isEmpty() ?
-                Collections.singletonList("No specific improvements provided") :
-                improvements;
-
-    }
-
-    private void addAnalysisSection(StringBuilder fullAnalysis, JsonNode analysisNode, String key, String prefix) {
-        if (!analysisNode.path(key).isMissingNode()){
-            fullAnalysis.append(prefix)
-                    .append(" ")
-                    .append(analysisNode.path(key).asText())
-                    .append("\n\n");
-            log.debug("[ActivityAIService] Added analysis section: {}", key);
-        } else {
-            log.debug("[ActivityAIService] Analysis section '{}' is missing or null", key);
-        }
-    }
-
     private String createPromptForActivity(Activity activity) {
-        log.debug("[ActivityAIService] Creating prompt for activity: type={}, duration={}, calories={}",
-                activity.getType(), activity.getDuration(), activity.getCaloriesBurned());
+        log.debug("{} Creating prompt for activity: type={}, duration={}, calories={}",
+                SERVICE_NAME, activity.getType(), activity.getDuration(), activity.getCaloriesBurned());
 
         String prompt = String.format("""
 You are an Elite Sports Physiologist and Senior Exercise Scientist. Analyze the supplied workout data and produce one single raw JSON object — nothing else. Do not include Markdown, explanations, commentary, or any additional keys. Use double quotes for strings and valid JSON syntax only.
@@ -274,17 +147,10 @@ INPUT DATA TO ANALYZE:
 Activity Type: %s
 Duration: %d minutes
 Calories Burned: %d
-Additional Data: %s
 
-(If you must clarify a missing value, include a 1-line inferred assumption inside the relevant analysis field.)
-""",
-                activity.getType(),
-                activity.getDuration(),
-                activity.getCaloriesBurned(),
-                activity.getAdditionalData()
-        );
+""", activity.getType(), activity.getDuration(), activity.getCaloriesBurned());
 
-        log.debug("[ActivityAIService] Prompt generated successfully, totalLength={} characters", prompt.length());
+        log.debug("{} Prompt generated successfully, totalLength={} characters", SERVICE_NAME, prompt.length());
         return prompt;
     }
 }

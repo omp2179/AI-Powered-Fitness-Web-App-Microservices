@@ -1,78 +1,153 @@
+# Gradle
+.gradle/
+build/
+gradle-app.setting
+!gradle-wrapper.jar
+
 # Maven
 target/
-**/target/
-*.class
-*.war
-*.jar
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
 
-# Eclipse
-/.project
-/.classpath
-/.settings/
-
-# IntelliJ IDEA
+# IDE
 .idea/
 *.iml
+*.ipr
 *.iws
-out/
-
-# VS Code
+.settings/
+.classpath
+.project
 .vscode/
-
-# OS files
+*.swp
+*.swo
+*~
 .DS_Store
-Thumbs.db
+
+# Runtime
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+/classes/
+/lib/
 
 # Logs
 *.log
 logs/
+*.log.*
 
-# Environment variables and secrets
+# Environment Variables & Secrets
 .env
-.env.*
+.env.local
+.env.*.local
 *.env
-local.properties
-credentials.properties
-secret-*.txt
-secrets.yml
-**/secrets/**
+!.env.example
 
-# IDE workspace that may contain env vars or secrets
-.idea/workspace.xml
-.idea/tasks.xml
-.idea/inspectionProfiles/
+# API Keys and Credentials (CRITICAL - Never commit these!)
+GEMINI_API_KEY
+gemini.api.key
+GEMINI_API_URL
+gemini.api.url
+api_key
+api-key
+secret
+*.key
+*.pem
+*.keystore
+*.jks
+credentials.json
+google-credentials.json
 
-# Application specific
-**/application*.yml
-**/application*.yaml
-!**/application*.example.yml
-!**/application*.example.yaml
+# Application Configuration with Secrets
+application.properties
+application.yml
+application-*.properties
+application-*.yml
 
-# Node
-node_modules/
+# Workspace Configuration Files
+*.iml
+*.iws
+*.ipr
 
-# Generated sources
-**/generated-sources/
-**/generated-test-sources/
+# OS
+.DS_Store
+Thumbs.db
 
-# Logs and temp
-tmp/
-temp/
+# Build artifacts
+out/
+bin/
+dist/
 
-# OS generated files
-Desktop.ini
-
-# JetBrains local history
-.idea/.history/
-
-# JetBrains run configurations (if they contain envs)
-**/*.run.xml
-
-# Misc
+# Temporary files
+*.tmp
+*.bak
 *.swp
-*~
+*.orig
 
-# Keep README, LICENSE, docs
-!README.md
-!LICENSE
+# Node dependencies (if applicable)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Docker
+.dockerignore
+*.tar.gz
+
+# SonarQube
+.sonarlint/
+.sonarqube/
+
+# Debugging
+debug.log
+trace.log
+
+# Kubernetes
+k8s/*.yaml
+k8s/*.yml
+
+# Test coverage
+coverage/
+.coverage
+
+# IDE Workspace
+workspace.xml
+tasks.xml
+
+# Mac
+.AppleDouble
+.LSOverride
+
+# Windows
+.windows
+ehthumbs.db
+
+# Generated files
+generated/
+generated-sources/
+generated-test-sources/
+
+# AI Service specific
+aiservice/target/
+aiservice/build/
+
+# Activity Service specific
+activityservice/target/
+activityservice/build/
+
+# User Service specific
+userservice/target/
+userservice/build/
+
+# Eureka specific
+eureka/target/
+eureka/build/
+
+# Spring Boot
+.sts4-cache/
+.factorypath
 

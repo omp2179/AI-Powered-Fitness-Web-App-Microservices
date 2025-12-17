@@ -4,8 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9fae07a8-0dbd-421e-ae79-fa70398da8c7" name="Changes" comment="feat: implement ActivityAIService and GeminiService for AI-driven activity recommendations">
+    <list default="true" id="9fae07a8-0dbd-421e-ae79-fa70398da8c7" name="Changes" comment="feat: add .gitignore to exclude IDE and environment-specific files">
+      <change afterPath="$PROJECT_DIR$/AI_SERVICE_TEST_GUIDE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ARCHITECTURE_GUIDE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CHANGES_SUMMARY.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/GEMINI_SETUP.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/IMPLEMENTATION_SUMMARY.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/POSTMAN_TESTING_GUIDE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/QUICK_START.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README_DOCUMENTATION.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/START_HERE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/VERIFICATION_REPORT.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/config/JacksonConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/activityservice/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/activityservice/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/controller/ActivityController.java" beforeDir="false" afterPath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/controller/ActivityController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/dto/ActivityRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/dto/ActivityRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/model/ActivityType.java" beforeDir="false" afterPath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/model/ActivityType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/service/ActivityAIService.java" beforeDir="false" afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/service/ActivityAIService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/service/ActivityMessageListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/service/ActivityMessageListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/service/GeminiService.java" beforeDir="false" afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/service/GeminiService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aiservice/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/aiservice/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,6 +77,7 @@
 }</component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
+    <option name="sortByName" value="true" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
@@ -95,7 +118,7 @@
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.annotationProcessors&quot;,
     &quot;settings.editor.splitter.proportion&quot;: &quot;0.27726808&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -145,6 +168,10 @@
       </method>
     </configuration>
     <configuration name="AiserviceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <envs>
+        <env name="GEMINI_API_KEY" value="AIzaSyAOfeZR_qMS2-fAoylliU3HT_5wEKi149Q" />
+        <env name="GEMINI_API_URL" value="https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent" />
+      </envs>
       <module name="aiservice" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.fitness.aiservice.AiserviceApplication" />
       <method v="2">
@@ -218,7 +245,8 @@
       <workItem from="1762278294066" duration="54000" />
       <workItem from="1762423821828" duration="668000" />
       <workItem from="1765799498557" duration="8520000" />
-      <workItem from="1765818027770" duration="5026000" />
+      <workItem from="1765818027770" duration="11469000" />
+      <workItem from="1765975719831" duration="7103000" />
     </task>
     <task id="LOCAL-00001" summary="initialize userservice microservice with basic configuration and user model">
       <option name="closed" value="true" />
@@ -548,7 +576,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765822495756</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="feat: add .gitignore to exclude IDE and environment-specific files">
+      <option name="closed" value="true" />
+      <created>1765823567767</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1765823567767</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -622,7 +658,8 @@
     <MESSAGE value="feat: add logging to ActivityController, RecommendationController, and services for improved traceability" />
     <MESSAGE value="feat: implement global exception handling and logging for user service" />
     <MESSAGE value="feat: implement ActivityAIService and GeminiService for AI-driven activity recommendations" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: implement ActivityAIService and GeminiService for AI-driven activity recommendations" />
+    <MESSAGE value="feat: add .gitignore to exclude IDE and environment-specific files" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add .gitignore to exclude IDE and environment-specific files" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

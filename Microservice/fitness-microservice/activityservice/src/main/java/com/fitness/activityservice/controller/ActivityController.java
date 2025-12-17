@@ -7,10 +7,17 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import jakarta.validation.Valid;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/activities")
@@ -23,7 +30,15 @@ public class ActivityController {
 
 
     @PostMapping
-    public ResponseEntity<ActivityResponse> trackActivity(@RequestBody ActivityRequest request) {
+    public ResponseEntity<?> trackActivity(@Valid @RequestBody ActivityRequest request, BindingResult br) {
+        if (br.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            List<FieldError> fieldErrors = br.getFieldErrors();
+            fieldErrors.forEach(fe -> errors.put(fe.getField(), fe.getDefaultMessage()));
+            log.warn("Validation failed for incoming activity: {}", errors);
+            return ResponseEntity.badRequest().body(errors);
+        }
+
         long start = System.currentTimeMillis();
         log.info("[HTTP POST] /api/activities userId={}, type={}, duration={}", request.getUserId(), request.getType(), request.getDuration());
         ActivityResponse response = activityService.trackActivity(request);

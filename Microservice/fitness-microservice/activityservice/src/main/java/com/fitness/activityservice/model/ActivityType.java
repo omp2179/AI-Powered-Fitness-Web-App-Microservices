@@ -1,5 +1,7 @@
 package com.fitness.activityservice.model;
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
+
 public enum ActivityType {
     RUNNING,
     CYCLING,
@@ -10,5 +12,7 @@ public enum ActivityType {
     HIIT,
     DANCE,
     CARDIO,
+    SKIPPING,
+    @JsonEnumDefaultValue
     OTHER
 }

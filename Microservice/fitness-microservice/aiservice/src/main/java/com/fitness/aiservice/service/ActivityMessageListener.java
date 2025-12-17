@@ -1,6 +1,5 @@
 package com.fitness.aiservice.service;
 
-//import com.fitness.activityservice.model.Activity;
 import com.fitness.aiservice.model.Activity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,8 +15,9 @@ import org.springframework.stereotype.Service;
 public class ActivityMessageListener {
 
     private final ActivityAIService activityAIService;
+    private static final String SERVICE_NAME = "[ActivityMessageListener]";
 
-    @KafkaListener(topics= "${kafka.topic.activity}" , groupId = "activity-processor-group")
+    @KafkaListener(topics = "${kafka.topic.activity}", groupId = "activity-processor-group")
     public void processActivity(
             @Payload Activity activity,
             @Header(KafkaHeaders.RECEIVED_TOPIC) String topic,
@@ -25,49 +25,72 @@ public class ActivityMessageListener {
             @Header(KafkaHeaders.OFFSET) long offset,
             @Header(value = KafkaHeaders.RECEIVED_KEY, required = false) String key,
             @Header(value = KafkaHeaders.RECEIVED_TIMESTAMP, required = false) Long ts
-
-
-    ){
-        log.info("[AIService<-Kafka] ▶ Message received: topic={}, partition={}, offset={}, key={}, ts={}",
-                topic, partition, offset, key, ts);
+    ) {
+        log.info("{} ▶ Message received: topic={}, partition={}, offset={}, key={}, ts={}",
+                SERVICE_NAME, topic, partition, offset, key, ts);
 
         try {
-            // Validate incoming activity
+            // Step 1: Validate incoming activity payload
             if (activity == null) {
-                log.error("[AIService] ✗ Received null activity payload at offset={}", offset);
+                log.error("{} ✗ Received null activity payload at offset={}, partition={}",
+                        SERVICE_NAME, offset, partition);
                 throw new IllegalArgumentException("Activity payload cannot be null");
             }
 
-            log.info("[AIService] Activity payload: id={}, userId={}, type={}, duration={}, calories={}",
-                    activity.getId(), activity.getUserId(), activity.getType(),
+            log.info("{} Activity payload: id={}, userId={}, type={}, duration={}, calories={}",
+                    SERVICE_NAME, activity.getId(), activity.getUserId(), activity.getType(),
                     activity.getDuration(), activity.getCaloriesBurned());
 
-            // Validate required fields
-            if (activity.getId() == null || activity.getUserId() == null || activity.getType() == null) {
-                log.error("[AIService] ✗ Invalid activity: missing required fields - id={}, userId={}, type={}",
-                        activity.getId(), activity.getUserId(), activity.getType());
-                throw new IllegalArgumentException("Activity must have id, userId, and type");
+            // Step 2: Validate required fields
+            if (activity.getId() == null) {
+                log.error("{} ✗ Activity ID is null at offset={}", SERVICE_NAME, offset);
+                throw new IllegalArgumentException("Activity ID cannot be null");
             }
 
-            log.debug("[AIService] Starting recommendation generation process for activityId={}", activity.getId());
+            if (activity.getUserId() == null) {
+                log.error("{} ✗ User ID is null for activityId={}, offset={}",
+                        SERVICE_NAME, activity.getId(), offset);
+                throw new IllegalArgumentException("User ID cannot be null");
+            }
+
+            if (activity.getType() == null) {
+                log.error("{} ✗ Activity type is null for activityId={}, userId={}, offset={}",
+                        SERVICE_NAME, activity.getId(), activity.getUserId(), offset);
+                throw new IllegalArgumentException("Activity type cannot be null");
+            }
+
+            log.debug("{} Validation passed for activityId={}", SERVICE_NAME, activity.getId());
+
+            // Step 3: Process the activity
+            log.debug("{} Starting recommendation generation for activityId={}", SERVICE_NAME, activity.getId());
             long startTime = System.currentTimeMillis();
 
             activityAIService.generateRecommendation(activity);
 
             long duration = System.currentTimeMillis() - startTime;
-            log.info("[AIService] ✓ Successfully processed activity message: activityId={}, userId={}, processingTime={}ms, offset={}",
-                    activity.getId(), activity.getUserId(), duration, offset);
+            log.info("{} ✓ Successfully processed activity message: activityId={}, userId={}, processingTime={}ms, offset={}",
+                    SERVICE_NAME, activity.getId(), activity.getUserId(), duration, offset);
 
         } catch (IllegalArgumentException e) {
-            log.error("[AIService] ✗ Validation error at topic={}, partition={}, offset={}, key={}: {}",
-                    topic, partition, offset, key, e.getMessage());
-            // Don't rethrow validation errors to prevent infinite retries
+            log.error("{} ✗ Validation error - topic={}, partition={}, offset={}, key={}: {}",
+                    SERVICE_NAME, topic, partition, offset, key, e.getMessage());
+            log.debug("{} Validation error details:", SERVICE_NAME, e);
+            // Don't rethrow validation errors to prevent infinite Kafka retries
+
+        } catch (RuntimeException e) {
+            log.error("{} ✗ Runtime error processing message - topic={}, partition={}, offset={}: {}",
+                    SERVICE_NAME, topic, partition, offset, e.getMessage());
+            log.debug("{} Runtime error stack trace:", SERVICE_NAME, e);
+            // Rethrow runtime exceptions to allow Kafka error handling/retry mechanisms
+            throw e;
 
         } catch (Exception e) {
-            log.error("[AIService] ✗ Error processing message at topic={}, partition={}, offset={}, key={}: {}",
-                    topic, partition, offset, key, e.getMessage(), e);
-            // rethrow to allow Kafka error handling/retry mechanisms if configured
-            throw e;
+            log.error("{} ✗ Unexpected error processing message at topic={}, partition={}, offset={}, key={}: {} - {}",
+                    SERVICE_NAME, topic, partition, offset, key, e.getClass().getSimpleName(), e.getMessage());
+            log.debug("{} Full error stack trace:", SERVICE_NAME, e);
+            // Rethrow to allow Kafka error handling
+            throw new RuntimeException("Error processing Kafka message: " + e.getMessage(), e);
         }
     }
 }
+

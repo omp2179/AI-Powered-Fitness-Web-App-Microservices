@@ -37,6 +37,9 @@ server:
 
 gemini:
   api:
-    url: ${GEMINI_API_URL}
-    key: ${GEMINI_API_KEY}
-
+    url: ${GEMINI_API_URL:}
+    key: ${GEMINI_API_KEY:}
+    timeout-seconds: 30
+    retry:
+      max-attempts: 3
+      backoff-delay-ms: 1000

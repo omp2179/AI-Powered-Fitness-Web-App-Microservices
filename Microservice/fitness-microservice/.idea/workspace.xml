@@ -4,30 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9fae07a8-0dbd-421e-ae79-fa70398da8c7" name="Changes" comment="feat: add .gitignore to exclude IDE and environment-specific files">
-      <change afterPath="$PROJECT_DIR$/AI_SERVICE_TEST_GUIDE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ARCHITECTURE_GUIDE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CHANGES_SUMMARY.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/GEMINI_SETUP.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/IMPLEMENTATION_SUMMARY.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/POSTMAN_TESTING_GUIDE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/QUICK_START.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README_DOCUMENTATION.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/START_HERE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/VERIFICATION_REPORT.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/config/JacksonConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/exception/GlobalExceptionHandler.java" afterDir="false" />
+    <list default="true" id="9fae07a8-0dbd-421e-ae79-fa70398da8c7" name="Changes" comment="feat: update .gitignore to include additional IDE and environment-specific files, and exclude sensitive configurations">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/activityservice/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/activityservice/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/controller/ActivityController.java" beforeDir="false" afterPath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/controller/ActivityController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/dto/ActivityRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/dto/ActivityRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/model/ActivityType.java" beforeDir="false" afterPath="$PROJECT_DIR$/activityservice/src/main/java/com/fitness/activityservice/model/ActivityType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/service/ActivityAIService.java" beforeDir="false" afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/service/ActivityAIService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/service/ActivityMessageListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/service/ActivityMessageListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/service/GeminiService.java" beforeDir="false" afterPath="$PROJECT_DIR$/aiservice/src/main/java/com/fitness/aiservice/service/GeminiService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/aiservice/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/aiservice/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ai-api-key.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,12 +42,12 @@
     &quot;author&quot;: &quot;omp2179&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/omp2179/AI-Powered-Fitness-Web-App&quot;,
-    &quot;accountId&quot;: &quot;55618721-3f6a-420e-a499-77a0a2177317&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/omp2179/AI-Powered-Fitness-Web-App-Microservices.git",
+    "accountId": "55618721-3f6a-420e-a499-77a0a2177317"
   }
-}</component>
+}]]></component>
   <component name="HttpClientEndpointsTabState">
     <option name="cachedRequestData" value="&lt;CachedHttpClientTabRequests&gt;&#10;  &lt;entry key=&quot;07ebd35d0f1bcbb18f2267e57c581148eea3c105&quot; value=&quot;###&amp;#10;POST http://localhost:8082/api/activities&quot; /&gt;&#10;&lt;/CachedHttpClientTabRequests&gt;" />
   </component>
@@ -246,7 +226,7 @@
       <workItem from="1762423821828" duration="668000" />
       <workItem from="1765799498557" duration="8520000" />
       <workItem from="1765818027770" duration="11469000" />
-      <workItem from="1765975719831" duration="7103000" />
+      <workItem from="1765975719831" duration="10135000" />
     </task>
     <task id="LOCAL-00001" summary="initialize userservice microservice with basic configuration and user model">
       <option name="closed" value="true" />
@@ -584,7 +564,39 @@
       <option name="project" value="LOCAL" />
       <updated>1765823567767</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="feat: enhance .gitignore and improve ActivityAIService logging and validation">
+      <option name="closed" value="true" />
+      <created>1765996710936</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1765996710936</updated>
+    </task>
+    <task id="LOCAL-00044" summary="feat: enhance .gitignore and improve ActivityAIService logging and validation">
+      <option name="closed" value="true" />
+      <created>1765996720554</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1765996720554</updated>
+    </task>
+    <task id="LOCAL-00045" summary="feat: update .gitignore to exclude workspace and sensitive configuration files">
+      <option name="closed" value="true" />
+      <created>1766040284442</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1766040284442</updated>
+    </task>
+    <task id="LOCAL-00046" summary="feat: update .gitignore to include additional IDE and environment-specific files, and exclude sensitive configurations">
+      <option name="closed" value="true" />
+      <created>1766040422332</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1766040422332</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -634,9 +646,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="initialize userservice microservice with basic configuration and user model" />
-    <MESSAGE value="refactor: rename application.properties to application.yaml and update configuration" />
-    <MESSAGE value="refactor: clean up application.yaml formatting and update workspace.xml task references" />
     <MESSAGE value="refactor: update workspace.xml to clean up formatting and adjust task references" />
     <MESSAGE value="refactor: update workspace.xml to enhance task management and adjust panel widths" />
     <MESSAGE value="feat: implement user registration functionality with validation" />
@@ -659,7 +668,10 @@
     <MESSAGE value="feat: implement global exception handling and logging for user service" />
     <MESSAGE value="feat: implement ActivityAIService and GeminiService for AI-driven activity recommendations" />
     <MESSAGE value="feat: add .gitignore to exclude IDE and environment-specific files" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: add .gitignore to exclude IDE and environment-specific files" />
+    <MESSAGE value="feat: enhance .gitignore and improve ActivityAIService logging and validation" />
+    <MESSAGE value="feat: update .gitignore to exclude workspace and sensitive configuration files" />
+    <MESSAGE value="feat: update .gitignore to include additional IDE and environment-specific files, and exclude sensitive configurations" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: update .gitignore to include additional IDE and environment-specific files, and exclude sensitive configurations" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -79,3 +79,13 @@ Thumbs.db
 *.sqlite
 *.h2.db
 *.mv.db
+
+# Sensitive individual secret files
+ai-api-key.txt
+*.key
+*.pem
+*.jks
+credentials.json
+google-credentials.json
+
+# End of file

@@ -1,153 +1,81 @@
-# Gradle
-.gradle/
-build/
-gradle-app.setting
-!gradle-wrapper.jar
-
-# Maven
+HELP.md
 target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
-release.properties
-dependency-reduced-pom.xml
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+workspace.xml
+*.workspace.xml
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+# Sensitive config
+.env
+.env.*
+
+# Markdown documentation (optional, uncomment if you want to ignore all .md files)
+*.md
+
+# AI/secret config
+secret.*
+
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/usage.statistics.xml
+.idea/shelf/
+.idea/httpRequests/
+.idea/dataSources*
+*.iml
 
 # IDE
 .idea/
 *.iml
-*.ipr
-*.iws
-.settings/
-.classpath
-.project
-.vscode/
-*.swp
-*.swo
-*~
-.DS_Store
 
-# Runtime
-*.class
-*.jar
-*.war
-*.ear
-*.nar
-/classes/
-/lib/
+# Build
+/target/
+/build/
+.gradle/
 
 # Logs
 *.log
 logs/
-*.log.*
 
-# Environment Variables & Secrets
+# Env & secrets
 .env
-.env.local
-.env.*.local
-*.env
-!.env.example
-
-# API Keys and Credentials (CRITICAL - Never commit these!)
-GEMINI_API_KEY
-gemini.api.key
-GEMINI_API_URL
-gemini.api.url
-api_key
-api-key
-secret
-*.key
-*.pem
-*.keystore
-*.jks
-credentials.json
-google-credentials.json
-
-# Application Configuration with Secrets
-application.properties
-application.yml
-application-*.properties
+.env.*
 application-*.yml
-
-# Workspace Configuration Files
-*.iml
-*.iws
-*.ipr
 
 # OS
 .DS_Store
 Thumbs.db
 
-# Build artifacts
-out/
-bin/
-dist/
-
-# Temporary files
-*.tmp
-*.bak
-*.swp
-*.orig
-
-# Node dependencies (if applicable)
-node_modules/
-package-lock.json
-yarn.lock
-
-# Docker
-.dockerignore
-*.tar.gz
-
-# SonarQube
-.sonarlint/
-.sonarqube/
-
-# Debugging
-debug.log
-trace.log
-
-# Kubernetes
-k8s/*.yaml
-k8s/*.yml
-
-# Test coverage
-coverage/
-.coverage
-
-# IDE Workspace
-workspace.xml
-tasks.xml
-
-# Mac
-.AppleDouble
-.LSOverride
-
-# Windows
-.windows
-ehthumbs.db
-
-# Generated files
-generated/
-generated-sources/
-generated-test-sources/
-
-# AI Service specific
-aiservice/target/
-aiservice/build/
-
-# Activity Service specific
-activityservice/target/
-activityservice/build/
-
-# User Service specific
-userservice/target/
-userservice/build/
-
-# Eureka specific
-eureka/target/
-eureka/build/
-
-# Spring Boot
-.sts4-cache/
-.factorypath
-
+# Databases
+*.db
+*.sqlite
+*.h2.db
+*.mv.db

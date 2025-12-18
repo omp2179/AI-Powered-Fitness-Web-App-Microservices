@@ -18,6 +18,8 @@ target/
 *.iws
 *.iml
 *.ipr
+workspace.xml
+*.workspace.xml
 
 ### NetBeans ###
 /nbproject/private/
@@ -31,3 +33,13 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Sensitive config
+.env
+.env.*
+
+# Markdown documentation (optional, uncomment if you want to ignore all .md files)
+*.md
+
+# AI/secret config
+secret.*

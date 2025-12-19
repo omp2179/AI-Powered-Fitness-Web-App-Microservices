@@ -5,13 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fitness.aiservice.model.Activity;
 import com.fitness.aiservice.model.Recommendation;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,7 +19,7 @@ public class ActivityAIService {
     private final GeminiService geminiService;
     private static final String SERVICE_NAME = "[ActivityAIService]";
 
-    public void generateRecommendation(Activity activity) {
+    public Recommendation generateRecommendation(Activity activity) {
         log.info("{} Starting recommendation generation for activityId={}, userId={}, type={}",
                 SERVICE_NAME, activity.getId(), activity.getUserId(), activity.getType());
 
@@ -50,36 +47,30 @@ public class ActivityAIService {
 
             long startTime = System.currentTimeMillis();
             String aiResponse = geminiService.getRecommendations(prompt);
-            long duration = System.currentTimeMillis() - startTime;
-
             if (aiResponse == null) {
                 log.warn("{} Received null AI response for activityId={}", SERVICE_NAME, activity.getId());
-                return;
+                return null;
             }
+            String prettyAiResponse = aiResponse.replace("\\n", "\n");
+
+            System.out.println();
+            System.out.println();
+            log.info("\n========== [AI RESPONSE START] ==========\n{}\n=========== [AI RESPONSE END] ==========\n", prettyAiResponse);
+            System.out.println();
+            System.out.println();
+            long duration = System.currentTimeMillis() - startTime;
 
             log.info("{} ✓ Received AI response for activityId={}, responseLength={}, duration={}ms",
                     SERVICE_NAME, activity.getId(), aiResponse.length(), duration);
             log.debug("{} Response preview: {}", SERVICE_NAME,
                     aiResponse.length() > 300 ? aiResponse.substring(0, 300) + "..." : aiResponse);
 
-            // Step 4: Parse and process response
-            try {
-                ObjectMapper mapper = new ObjectMapper();
-                JsonNode root = mapper.readTree(aiResponse);
-                log.debug("{} Successfully parsed AI response JSON structure", SERVICE_NAME);
 
-                // Validate response structure
-                if (root.has("candidates") && root.get("candidates").isArray()) {
-                    log.debug("{} Valid Gemini response structure detected", SERVICE_NAME);
-                } else {
-                    log.warn("{} Response structure does not match expected Gemini format", SERVICE_NAME);
-                }
-            } catch (Exception e) {
-                log.warn("{} Could not parse AI response as JSON: {}", SERVICE_NAME, e.getMessage());
-            }
 
             log.info("{} ✓ Successfully processed recommendation for activityId={}, userId={}",
                     SERVICE_NAME, activity.getId(), activity.getUserId());
+
+            return processAIResponse(activity,aiResponse);
 
         } catch (IllegalArgumentException e) {
             log.error("{} Validation error for activityId={}: {}", SERVICE_NAME, activity.getId(), e.getMessage());
@@ -93,62 +84,193 @@ public class ActivityAIService {
         }
     }
 
+    private Recommendation processAIResponse(Activity activity, String aiResponse) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode rootNode = mapper.readTree(aiResponse);
+            JsonNode textNode = rootNode.path("candidates").get(0)
+                    .path("content")
+                    .path("parts").get(0)
+                    .path("text");
+
+            String jsonContent = textNode.asText().replaceAll("```json\\n","")
+                    .replaceAll("\\n```","");
+
+            JsonNode analysisJson = mapper.readTree(jsonContent);
+            JsonNode analysisNode = analysisJson.path("analysis");
+            StringBuilder fullAnalysis = new StringBuilder();
+
+            addAnalysisSection(fullAnalysis,analysisNode,"overall","Overall:");
+            addAnalysisSection(fullAnalysis,analysisNode,"pace","Pace:");
+            addAnalysisSection(fullAnalysis,analysisNode,"heartRate","Heart Rate:");
+            addAnalysisSection(fullAnalysis,analysisNode,"caloriesBurned","Calories:");
+
+            List<String> improvements = extractImprovements(analysisJson.path("improvements"));
+            List<String> suggestions = extractSuggestions(analysisJson.path("suggestions"));
+            List<String> safety = extractSafetyGuidelines(analysisJson.path("safety"));
+
+            return Recommendation.builder()
+                    .activityId(activity.getId())
+                    .userId(activity.getUserId())
+                    .type(activity.getType().toString())
+                    .recommendation(fullAnalysis.toString().trim())
+                    .improvements(improvements)
+                    .suggestions(suggestions)
+
+                    .safety(safety)
+                    .build();
+
+        }catch (Exception e) {
+            log.warn("{} Failed to parse/process AI response for activityId={}: {}",
+                    SERVICE_NAME, activity.getId(), e.getMessage(), e);
+
+            return createDefaultRecommendation(activity);
+        }
+
+    }
+
+    private Recommendation createDefaultRecommendation(Activity activity) {
+        return Recommendation.builder()
+                .activityId(activity.getId())
+                .userId(activity.getUserId())
+                .type(activity.getType().toString())
+                .recommendation("Unable to generate detailed recommendation at this time.")
+                .improvements(Collections.singletonList("No specific improvements suggested."))
+                .suggestions(Collections.singletonList("No specific workout suggestions provided."))
+                .safety(List.of("No specific safety guidelines provided."))
+                .build();
+    }
+
+    private List<String> extractSafetyGuidelines(JsonNode safetyNode) {
+        List<String> safetyGuidelines = new ArrayList<>();
+        if(safetyNode.isArray()) {
+            safetyNode.forEach(item->
+                safetyGuidelines.add(item.asText())
+            );
+        }
+        return safetyGuidelines.isEmpty() ? Collections.singletonList("No specific safety guidelines provided.") : safetyGuidelines;
+    }
+
+    private List<String> extractSuggestions(JsonNode suggestionsNode) {
+        List<String> suggestions = new ArrayList<>();
+        if (suggestionsNode.isArray()) {
+            suggestionsNode.forEach(suggestion -> {
+                String workout = suggestion.path("workout").asText();
+                String description = suggestion.path("description").asText();
+                suggestions.add(String.format("%s: %s", workout, description));
+            });
+        }
+
+        return suggestions.isEmpty() ? Collections.singletonList("No specific workout suggestions provided.") : suggestions;
+    }
+
+    private List<String> extractImprovements(JsonNode improvementsNode) {
+        List<String> improvements = new ArrayList<>();
+        if(improvementsNode.isArray()) {
+            improvementsNode.forEach(improvement->{
+                String area = improvement.path("area").asText();
+                String recommendation = improvement.path("recommendation").asText();
+                improvements.add(String.format("%s: %s",area,recommendation));
+            });
+        }
+        return improvements.isEmpty() ? Collections.singletonList("No specific improvements suggested.") : improvements;
+    }
+
+    private void addAnalysisSection(StringBuilder fullAnalysis, JsonNode analysisNode, String key, String prefix) {
+        if(!analysisNode.path(key).isMissingNode()) {
+            fullAnalysis.append(prefix).append(analysisNode.path(key).asText()).append("\n\n");
+        }
+    }
+
+
     private String createPromptForActivity(Activity activity) {
         log.debug("{} Creating prompt for activity: type={}, duration={}, calories={}",
-                SERVICE_NAME, activity.getType(), activity.getDuration(), activity.getCaloriesBurned());
+                 SERVICE_NAME, activity.getType(), activity.getDuration(), activity.getCaloriesBurned());
+
+        // String.format will throw if the number/types of placeholders don't match.
+        // Keep the placeholders aligned and make values null-safe.
+        String activityType = String.valueOf(activity.getType());
+        int durationMinutes = activity.getDuration() == null ? 0 : activity.getDuration();
+        int caloriesBurned = activity.getCaloriesBurned() == null ? 0 : activity.getCaloriesBurned();
+        String additionalMetrics = "N/A";
 
         String prompt = String.format("""
-You are an Elite Sports Physiologist and Senior Exercise Scientist. Analyze the supplied workout data and produce one single raw JSON object — nothing else. Do not include Markdown, explanations, commentary, or any additional keys. Use double quotes for strings and valid JSON syntax only.
+  You are an Elite Sports Physiologist and Senior Exercise Scientist analyzing workouts for a daily-use fitness app.
+ Your response should feel like guidance from a friendly, experienced personal trainer: correct, clear, detailed, encouraging, and practical.
 
-(Short coach voice for human-like clarity: be concise, confident, and encouraging — write as an experienced practitioner talking to an athlete.)
+━━━━━━━━━━━━━━━━━━━━━━
+ABSOLUTE OUTPUT RULES
+━━━━━━━━━━━━━━━━━━━━━━
+1. Output MUST be exactly ONE valid raw JSON object — nothing else.
+2. Do NOT include markdown, explanations, comments, or extra text.
+3. Use double quotes for all strings and valid JSON only.
+4. Do NOT add, remove, rename, or reorder any keys.
+5. The output must be accurate, logically consistent, and easy to understand for everyday users.
 
-STRICT REQUIREMENTS
-1. Output MUST be a single valid JSON object and nothing else.
-2. Output must match this exact top-level structure and keys:
-   - "analysis": object with fields "overall", "pace", "heartRate", "caloriesBurned".
-   - "improvements": array of strings (format: "Area — Detailed recommendation").
-   - "suggestions": array of strings (format: "WorkoutName — Description").
-   - "safety": array of strings.
-3. Do NOT add any other fields.
-4. Return raw JSON only (no markdown code blocks).
-5. Keep advice precise but **simple to understand**. Avoid medical jargon unless necessary.
-6. **Adapt technical depth:** For high-intensity/advanced efforts, you can use terms like VO2 or eccentric loading. For standard/beginner efforts, use plain English (e.g., "posture", "breathing", "step rate").
-7. Include a brief numeric rationale (e.g., calories/min) inside the analysis fields when inferring intensity.
-8. Use the "Key — Value" string format for lists so they map correctly to a Java List<String> model.
-
-HUMAN-LIKE TONE GUIDELINES
-- Sound like a smart personal trainer, not a textbook.
-- Use 1–2 short humanizing clauses where appropriate (e.g., "Practical tip: ...", "Quick check: ...").
-
-REQUIRED JSON TEMPLATE — USE THIS FORMAT EXACTLY
+━━━━━━━━━━━━━━━━━━━━━━
+REQUIRED JSON STRUCTURE (MUST MATCH EXACTLY)
+━━━━━━━━━━━━━━━━━━━━━━
 {
   "analysis": {
-    "overall": "Inferred intensity with numeric rationale (e.g. 'Vigorous effort — 12.0 cal/min; you really pushed the pace here').",
-    "pace": "Pace/tempo analysis (e.g. 'Consistent pacing, but you started a bit too fast').",
-    "heartRate": "Inferred zone (e.g. 'Est. 70-80%% HRmax - mostly aerobic zone') with short rationale.",
-    "caloriesBurned": "Metabolic demand interpretation."
+    "overall": "Overall effort analysis with a brief numeric rationale (e.g. calories per minute).",
+    "pace": "Pace or tempo analysis with a clear coaching cue.",
+    "heartRate": "Estimated heart-rate zone or effort level with a simple explanation.",
+    "caloriesBurned": "Interpretation of calorie burn and its training impact."
   },
   "improvements": [
-    "Cadence — Try taking shorter, quicker steps to take the pressure off your knees.",
-    "Breathing — Focus on deep belly breaths to lower your heart rate during rest periods.",
-    "Posture — Keep your chest up and shoulders relaxed when you get tired."
+    {
+      "area": "Area name",
+      "recommendation": "Clear, detailed, and actionable recommendation written in simple language"
+    }
   ],
   "suggestions": [
-    "Interval Run — 4 sets of 4 minutes hard running, 2 minutes easy jogging.",
-    "Active Recovery — Go for a light 20-minute walk to help your legs recover."
+    {
+      "workout": "Workout name",
+      "description": "Detailed, step-by-step workout description including duration, intensity, reps, or pace"
+    }
   ],
   "safety": [
-    "Keep your back straight and core tight to avoid lower back strain.",
-    "Stop immediately if you feel dizzy or lightheaded during high exertion."
+    "Short, clear safety guideline written for everyday users",
+    "Another concise and practical safety guideline"
   ]
 }
 
-INPUT DATA TO ANALYZE:
+━━━━━━━━━━━━━━━━━━━━━━
+CONTENT & QUALITY GUIDELINES
+━━━━━━━━━━━━━━━━━━━━━━
+• Be CORRECT: base all conclusions on the provided data; avoid contradictions.
+• Be CLEAR: avoid vague advice — every point should be immediately understandable.
+• Be DETAILED: explain what to do, how long, how hard, and why it helps.
+• Include at least one numeric insight where useful (e.g., cal/min, pace, duration).
+• Use plain English; if technical terms appear, briefly explain them.
+
+━━━━━━━━━━━━━━━━━━━━━━
+UX WRITING RULES (CRITICAL)
+━━━━━━━━━━━━━━━━━━━━━━
+• Use encouraging micro-language where appropriate:
+  - Examples: "Nice work — small tweak: ...", "Quick tip: ...", "Good consistency here, next step: ..."
+• Make EVERY recommendation actionable and measurable:
+  - Include numbers such as minutes, reps, pace, heart-rate zone, cadence, or effort level (RPE).
+• Prioritize clarity for recreational users new to training:
+  - Avoid assumptions of prior fitness knowledge.
+  - Prefer simple cues like "comfortable pace", "slightly out of breath", "able to talk in short sentences".
+• Write in a positive, motivating tone — focus on progress, not faults.
+• Assume the output will be shown directly in the app UI without edits.
+
+━━━━━━━━━━━━━━━━━━━━━━
+INPUT DATA TO ANALYZE
+━━━━━━━━━━━━━━━━━━━━━━
 Activity Type: %s
 Duration: %d minutes
 Calories Burned: %d
+Additional Metrics: %s
 
-""", activity.getType(), activity.getDuration(), activity.getCaloriesBurned());
+━━━━━━━━━━━━━━━━━━━━━━
+FINAL INSTRUCTION
+━━━━━━━━━━━━━━━━━━━━━━
+Analyze the activity focusing on performance, improvement areas, next workout suggestions, and safety.
+Return ONLY the JSON object in the exact format specified above.
+""", activityType, durationMinutes, caloriesBurned, additionalMetrics);
 
         log.debug("{} Prompt generated successfully, totalLength={} characters", SERVICE_NAME, prompt.length());
         return prompt;

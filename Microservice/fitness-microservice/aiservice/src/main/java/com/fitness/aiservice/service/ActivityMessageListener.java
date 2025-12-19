@@ -1,6 +1,8 @@
 package com.fitness.aiservice.service;
 
 import com.fitness.aiservice.model.Activity;
+import com.fitness.aiservice.model.Recommendation;
+import com.fitness.aiservice.repository.RecommendationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 public class ActivityMessageListener {
 
     private final ActivityAIService activityAIService;
+    private final RecommendationRepository recommendationRepository;
     private static final String SERVICE_NAME = "[ActivityMessageListener]";
 
     @KafkaListener(topics = "${kafka.topic.activity}", groupId = "activity-processor-group")
@@ -65,7 +68,24 @@ public class ActivityMessageListener {
             log.debug("{} Starting recommendation generation for activityId={}", SERVICE_NAME, activity.getId());
             long startTime = System.currentTimeMillis();
 
-            activityAIService.generateRecommendation(activity);
+            Recommendation recommendation=activityAIService.generateRecommendation(activity);
+
+            // Avoid NPE and make it obvious in logs when recommendation couldn't be generated.
+            if (recommendation == null) {
+                log.warn("{} ⚠ Recommendation is null; skipping save. activityId={}, userId={}, offset={}, partition={}",
+                        SERVICE_NAME, activity.getId(), activity.getUserId(), offset, partition);
+                return;
+            }
+
+            log.debug("{} Saving recommendation: activityId={}, userId={}, improvements={}, suggestions={}, safety={}",
+                    SERVICE_NAME,
+                    recommendation.getActivityId(),
+                    recommendation.getUserId(),
+                    recommendation.getImprovements() == null ? 0 : recommendation.getImprovements().size(),
+                    recommendation.getSuggestions() == null ? 0 : recommendation.getSuggestions().size(),
+                    recommendation.getSafety() == null ? 0 : recommendation.getSafety().size());
+
+            recommendationRepository.save(recommendation);
 
             long duration = System.currentTimeMillis() - startTime;
             log.info("{} ✓ Successfully processed activity message: activityId={}, userId={}, processingTime={}ms, offset={}",
@@ -74,7 +94,7 @@ public class ActivityMessageListener {
         } catch (IllegalArgumentException e) {
             log.error("{} ✗ Validation error - topic={}, partition={}, offset={}, key={}: {}",
                     SERVICE_NAME, topic, partition, offset, key, e.getMessage());
-            log.debug("{} Validation error details:", SERVICE_NAME, e);
+            log.debug("{} Validation error details", SERVICE_NAME, e);
             // Don't rethrow validation errors to prevent infinite Kafka retries
 
         } catch (RuntimeException e) {
@@ -93,4 +113,3 @@ public class ActivityMessageListener {
         }
     }
 }
-

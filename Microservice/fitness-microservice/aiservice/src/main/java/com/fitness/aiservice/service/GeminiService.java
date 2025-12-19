@@ -131,15 +131,15 @@ public class GeminiService {
                     return getMockResponse();
                 }
 
-                // Print to console
-                System.out.println("\n====================================");
-                System.out.println("[GeminiService] Raw API Response:");
-                System.out.println("====================================");
-                System.out.println(response);
-                System.out.println("====================================\n");
-
-                log.debug("{} Response preview: {}", SERVICE_NAME,
-                        response.length() > 300 ? response.substring(0, 300) + "..." : response);
+//                // Print to console
+//                System.out.println("\n====================================");
+//                System.out.println("[GeminiService] Raw API Response:");
+//                System.out.println("====================================");
+//                System.out.println(response);
+//                System.out.println("====================================\n");
+//
+//                log.debug("{} Response preview: {}", SERVICE_NAME,
+//                        response.length() > 300 ? response.substring(0, 300) + "..." : response);
 
                 return response;
 

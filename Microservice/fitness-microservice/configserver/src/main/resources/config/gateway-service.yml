@@ -1,7 +1,10 @@
 eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka
+  instance:
+    hostname: gateway-service
+    instance-id: ${spring.application.name}:${server.port}
+    prefer-ip-address: false
+    status-page-url: http://${eureka.instance.hostname}:${server.port}
+    health-check-url: http://${eureka.instance.hostname}:${server.port}/actuator/health
 
 spring:
 

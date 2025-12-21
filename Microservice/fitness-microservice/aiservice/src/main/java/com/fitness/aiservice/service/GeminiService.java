@@ -102,44 +102,44 @@ public class GeminiService {
                 attempt++;
                 log.debug("{} Attempt {}/{} to call Gemini API", SERVICE_NAME, attempt, maxRetries);
 
-                Map<String, Object> requestBody = Map.of(
-                        "contents", new Object[]{
-                                Map.of("parts", new Object[]{
-                                        Map.of("text", details)
-                                })
-                        }
-                );
+                // Build request body using Jackson to exactly match Gemini's expected JSON schema
+                ObjectNode requestBody = mapper.createObjectNode();
+                ArrayNode contents = requestBody.putArray("contents");
+                ObjectNode content = contents.addObject();
+                ArrayNode parts = content.putArray("parts");
+                ObjectNode part = parts.addObject();
+                part.put("text", details);
 
-                log.debug("{} Sending POST request to Gemini API endpoint", SERVICE_NAME);
+                // Log outgoing JSON (trim if very large)
+                try {
+                    String requestJson = mapper.writeValueAsString(requestBody);
+                    log.debug("{} Outgoing Gemini request JSON: {}", SERVICE_NAME,
+                            requestJson.length() > 1000 ? requestJson.substring(0, 1000) + "..." : requestJson);
+                } catch (Exception jsonLogEx) {
+                    log.warn("{} Failed to serialize request body for logging: {}", SERVICE_NAME, jsonLogEx.getMessage());
+                }
+
+                log.debug("{} Sending POST request to Gemini API endpoint: {}", SERVICE_NAME, geminiApiUrl);
                 long startTime = System.currentTimeMillis();
 
                 String response = webClient.post()
                         .uri(geminiApiUrl)
                         .header("Content-Type", "application/json")
-                        .header("X-goog-api-key", geminiApiKey)
+                        // Use canonical header name for Gemini API key
+                        .header("x-goog-api-key", geminiApiKey)
                         .bodyValue(requestBody)
                         .retrieve()
                         .bodyToMono(String.class)
                         .block();
 
                 long duration = System.currentTimeMillis() - startTime;
-                log.info("{} ✓ Successfully received response from Gemini API (duration={}ms, responseLength={})",
+                log.info("{}  Successfully received response from Gemini API (duration={}ms, responseLength={})",
                         SERVICE_NAME, duration, response != null ? response.length() : 0);
 
                 if (response == null) {
                     log.warn("{} Received null response from Gemini API, using mock response", SERVICE_NAME);
                     return getMockResponse();
                 }
-
-//                // Print to console
-//                System.out.println("\n====================================");
-//                System.out.println("[GeminiService] Raw API Response:");
-//                System.out.println("====================================");
-//                System.out.println(response);
-//                System.out.println("====================================\n");
-//
-//                log.debug("{} Response preview: {}", SERVICE_NAME,
-//                        response.length() > 300 ? response.substring(0, 300) + "..." : response);
 
                 return response;
 
@@ -168,8 +168,31 @@ public class GeminiService {
                 return getMockResponse();
 
             } catch (org.springframework.web.reactive.function.client.WebClientResponseException.BadRequest e) {
-                log.error("{} HTTP 400 Bad Request - Invalid request format", SERVICE_NAME);
-                log.debug("{} Request body: {}", SERVICE_NAME, details.substring(0, Math.min(200, details.length())));
+                // Enhanced 400 handling: log server response and our exact request JSON
+                String responseBody = e.getResponseBodyAsString();
+                log.error("{} HTTP 400 Bad Request - Invalid request format: {}", SERVICE_NAME, e.getMessage());
+                log.error("{} Response body from Gemini: {}", SERVICE_NAME,
+                        responseBody != null
+                                ? (responseBody.length() > 2000 ? responseBody.substring(0, 2000) + "..." : responseBody)
+                                : "<null>");
+
+                try {
+                    ObjectNode requestBody = mapper.createObjectNode();
+                    ArrayNode contents = requestBody.putArray("contents");
+                    ObjectNode content = contents.addObject();
+                    ArrayNode parts = content.putArray("parts");
+                    ObjectNode part = parts.addObject();
+                    part.put("text", details);
+
+                    String requestJson = mapper.writeValueAsString(requestBody);
+                    log.debug("{} Request JSON sent to Gemini: {}", SERVICE_NAME,
+                            requestJson.length() > 2000 ? requestJson.substring(0, 2000) + "..." : requestJson);
+                } catch (Exception jsonLogEx) {
+                    log.warn("{} Failed to reconstruct request JSON for logging after 400: {}", SERVICE_NAME, jsonLogEx.getMessage());
+                    log.debug("{} Raw details string used instead: {}", SERVICE_NAME,
+                            details.substring(0, Math.min(200, details.length())));
+                }
+
                 return getMockResponse();
 
             } catch (org.springframework.web.reactive.function.client.WebClientResponseException e) {

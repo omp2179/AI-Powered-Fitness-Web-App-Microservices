@@ -35,4 +35,10 @@ public class Usercontroller {
         logger.info("Validating user existence for userId: {}", userId);
         return ResponseEntity.ok(userService.existByUserId(userId));
     }
+
+    @GetMapping("/debug/all-ids")
+    public ResponseEntity<?> getAllUserIds() {
+        logger.info("Fetching all user IDs for debugging");
+        return ResponseEntity.ok(userService.getAllUserIds());
+    }
 }

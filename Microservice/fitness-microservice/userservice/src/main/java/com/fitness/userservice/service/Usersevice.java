@@ -23,7 +23,17 @@ public class Usersevice {
         try {
             if(repository.existsByEmail((request.getEmail()))) {
                 log.warn("Registration failed: Email already exists - {}", request.getEmail());
-                throw new RuntimeException("Email already exists");
+                User existingUser=repository.findByEmail(request.getEmail());
+                log.info("Returning existing user: {}", existingUser.getEmail());
+                UserResponse userResponse = new UserResponse();
+                userResponse.setId(existingUser.getId());
+                userResponse.setPassword(existingUser.getPassword());
+                userResponse.setEmail(existingUser.getEmail());
+                userResponse.setFirstname(existingUser.getFirstname());
+                userResponse.setLastname(existingUser.getLastname());
+                userResponse.setCreatedAt(existingUser.getCreatedAt());
+                userResponse.setUpdatedAt(existingUser.getUpdatedAt());
+                return userResponse; // FIXED: Added missing return statement
             }
             User user = new User();
             user.setEmail(request.getEmail());
@@ -72,7 +82,31 @@ public class Usersevice {
     }
 
     public Boolean existByUserId(String userId) {
-        log.info("Validating UserId: "+userId);
-        return repository.existsById(userId);
+        log.info("Validating UserId: {}", userId);
+        log.info("UserId length: {}", userId.length());
+        log.info("UserId trimmed: '{}'", userId.trim());
+        boolean exists = repository.existsById(userId);
+        log.info("Validation result for userId {}: {}", userId, exists);
+
+        // Debug: List all user IDs in database
+        log.info("All user IDs in database:");
+        repository.findAll().forEach(user -> log.info("  - ID: '{}' (length: {})", user.getId(), user.getId().length()));
+
+        return exists;
+    }
+
+    public Boolean existByKeycloakId(String userId) {
+        return repository.existsByKeycloakId(userId);
+    }
+
+    public java.util.List<java.util.Map<String, String>> getAllUserIds() {
+        return repository.findAll().stream()
+                .map(user -> java.util.Map.of(
+                        "id", user.getId(),
+                        "email", user.getEmail(),
+                        "firstname", user.getFirstname(),
+                        "lastname", user.getLastname()
+                ))
+                .collect(java.util.stream.Collectors.toList());
     }
 }

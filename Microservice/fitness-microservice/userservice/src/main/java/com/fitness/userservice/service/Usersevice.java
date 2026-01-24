@@ -40,6 +40,8 @@ public class Usersevice {
             user.setPassword(request.getPassword());
             user.setFirstname(request.getFirstName());
             user.setLastname(request.getLastName());
+            user.setKeycloakId(request.getKeycloakId());
+
             User savedUser=repository.save(user);
             log.info("User registered successfully: {}", savedUser.getEmail());
             UserResponse userResponse = new UserResponse();

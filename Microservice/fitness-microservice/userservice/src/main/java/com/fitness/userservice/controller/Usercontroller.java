@@ -33,7 +33,7 @@ public class Usercontroller {
     @GetMapping("/{userId}/validate")
     public ResponseEntity<Boolean> validateUser(@PathVariable String userId) {
         logger.info("Validating user existence for userId: {}", userId);
-        return ResponseEntity.ok(userService.existByUserId(userId));
+        return ResponseEntity.ok(userService.existByKeycloakId(userId));
     }
 
     @GetMapping("/debug/all-ids")

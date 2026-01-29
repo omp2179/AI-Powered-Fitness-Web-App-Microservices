@@ -1,0 +1,51 @@
+Swagger/OpenAPI (Docs) — Low Risk, High Visual. [Current Priority]
+
+MongoDB Indexes (DB Perf) — Low Risk, High Perf.
+
+Redis (Caching) — Medium Risk, High Scale.
+
+Resilience4j (Circuit Breaker) — Medium Risk, "Senior" mindset.
+
+Zipkin (Tracing) — Medium Risk, "Ops" mindset.
+
+
+=============================================================================
+
+#1: Redis Caching ⭐⭐⭐
+Add it for: Leaderboards, user profiles, AI recommendations
+Why: Industry standard (Stripe/Flipkart use it), reduces DB queries by 60%
+Complexity: Low - Just add @Cacheable annotation
+Resume impact: "Reduced database queries by 60% using Redis distributed caching"
+Interview risk: Very low - easy to explain cache hit/miss, TTL, eviction
+
+#2: Gamification Features (Leaderboards + Badges + Streaks) 🏆
+Add it for: User engagement (every fitness app has this - Strava, Fitbit)
+Why: Gives you real features to justify your tech stack
+Complexity: Low-Medium - Scheduled jobs + Kafka events
+Resume impact: "Built gamification engine with leaderboards and badge system for 10K users"
+Interview risk: Low - user-facing feature, easy to demo
+
+#3: Rate Limiting (Bucket4j) 🚦
+Add it for: Prevent API abuse, protect Gemini AI quota limits
+Why: Production systems need this, shows security awareness
+Complexity: Low - Spring Boot annotation support
+Resume impact: "Implemented token bucket rate limiting, preventing abuse with 99.9% uptime"
+Interview risk: Low - explain token bucket vs fixed window (30 seconds)
+
+#4: MongoDB Indexes + Query Optimization 📊
+Add it for: Leaderboard sorting, activity history filtering
+Why: Shows database performance understanding (core backend skill)
+Complexity: Very Low - Just add indexes and run .explain()
+Resume impact: "Optimized queries 70% using compound indexes, reducing P95 latency from 400ms to 80ms"
+Interview risk: Very low - straightforward to explain index usage
+
+#5: API Documentation (Swagger/OpenAPI 3.0) 📚
+Add it for: All REST endpoints with examples
+Why: Shows professionalism (Stripe/Razorpay standard), auto-generated docs
+Complexity: Very Low - Add one dependency, annotations
+Resume impact: "Designed RESTful APIs with OpenAPI 3.0 documentation for 15+ endpoints"
+Interview risk: Zero - only asked "why OpenAPI?" (answer: auto-generated, always in sync)
+
+
+https://www.youtube.com/watch?v=fFHl7psnvz0
+"Implemented security best practices using HTTP headers (CORS, Cache-Control, X-Frame-Options) preventing clickjacking and reducing bandwidth by 40%."

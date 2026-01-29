@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import java.util.HashMap;
@@ -44,6 +41,5 @@ public class ActivityController {
         ActivityResponse response = activityService.trackActivity(request);
         log.info("[HTTP 200] /api/activities completed in {} ms, activityId={}", (System.currentTimeMillis()-start), response.getId());
         return ResponseEntity.ok(response);
-
     }
 }

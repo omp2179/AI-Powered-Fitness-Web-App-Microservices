@@ -2,6 +2,7 @@ package com.fitness.aiservice.service;
 
 import com.fitness.aiservice.model.Activity;
 import com.fitness.aiservice.model.Recommendation;
+import com.fitness.aiservice.repository.ActivityRepository;
 import com.fitness.aiservice.repository.RecommendationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 public class ActivityMessageListener {
 
     private final ActivityAIService activityAIService;
+    private final ActivityRepository activityRepository;
     private final RecommendationRepository recommendationRepository;
     private static final String SERVICE_NAME = "[ActivityMessageListener]";
 
@@ -64,7 +66,36 @@ public class ActivityMessageListener {
 
             log.debug("{} Validation passed for activityId={}", SERVICE_NAME, activity.getId());
 
-            // Step 3: Process the activity
+            // Step 3: Save activity to local MongoDB (for 7-day history queries)
+            log.info("{} Saving activity to local MongoDB: activityId={}, userId={}, startTime={}",
+                    SERVICE_NAME, activity.getId(), activity.getUserId(), activity.getStartTime());
+
+            // Ensure startTime is set (critical for query to work)
+            if (activity.getStartTime() == null) {
+                log.warn("{} ⚠ startTime is null for activityId={}, setting to now",
+                        SERVICE_NAME, activity.getId());
+                activity.setStartTime(java.time.LocalDateTime.now());
+            }
+
+            Activity savedActivity = activityRepository.save(activity);
+            log.info("{} ✓ Activity saved locally: activityId={}, userId={}, startTime={}",
+                    SERVICE_NAME, savedActivity.getId(), savedActivity.getUserId(), savedActivity.getStartTime());
+
+            // Verify activity was actually saved by counting
+            long activityCount = activityRepository.count();
+            log.info("{} Total activities in local DB: {}", SERVICE_NAME, activityCount);
+
+            // Verify this specific activity can be retrieved
+            java.util.Optional<Activity> verifyActivity = activityRepository.findById(savedActivity.getId());
+            if (verifyActivity.isPresent()) {
+                log.info("{} ✓ Verified activity retrieval: activityId={}, startTime={}",
+                        SERVICE_NAME, verifyActivity.get().getId(), verifyActivity.get().getStartTime());
+            } else {
+                log.error("{} ✗ Failed to retrieve just-saved activity: activityId={}",
+                        SERVICE_NAME, savedActivity.getId());
+            }
+
+            // Step 4: Generate recommendation with 7-day context
             log.debug("{} Starting recommendation generation for activityId={}", SERVICE_NAME, activity.getId());
             long startTime = System.currentTimeMillis();
 
@@ -85,7 +116,14 @@ public class ActivityMessageListener {
                     recommendation.getSuggestions() == null ? 0 : recommendation.getSuggestions().size(),
                     recommendation.getSafety() == null ? 0 : recommendation.getSafety().size());
 
-            recommendationRepository.save(recommendation);
+            Recommendation savedRecommendation = recommendationRepository.save(recommendation);
+            log.info("{} ✓ Recommendation saved: id={}, activityId={}, userId={}",
+                    SERVICE_NAME, savedRecommendation.getId(), savedRecommendation.getActivityId(),
+                    savedRecommendation.getUserId());
+
+            // Verify recommendation was saved
+            long recommendationCount = recommendationRepository.count();
+            log.info("{} Total recommendations in DB: {}", SERVICE_NAME, recommendationCount);
 
             long duration = System.currentTimeMillis() - startTime;
             log.info("{} ✓ Successfully processed activity message: activityId={}, userId={}, processingTime={}ms, offset={}",

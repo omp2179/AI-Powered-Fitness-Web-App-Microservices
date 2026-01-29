@@ -59,16 +59,24 @@ public class GeminiService {
         isConfigured = geminiApiUrl != null && !geminiApiUrl.isBlank() &&
                 geminiApiKey != null && !geminiApiKey.isBlank();
 
-        log.info("{} Configuration validation - URL configured: {}, Key configured: {}, Ready: {}",
-                SERVICE_NAME,
-                geminiApiUrl != null && !geminiApiUrl.isBlank(),
-                geminiApiKey != null && !geminiApiKey.isBlank(),
-                isConfigured);
+        // Mask API key for security (show only first 10 and last 4 characters)
+        String maskedKey = geminiApiKey != null && geminiApiKey.length() > 14
+                ? geminiApiKey.substring(0, 10) + "****" + geminiApiKey.substring(geminiApiKey.length() - 4)
+                : "NOT_SET";
+
+        log.info("{} ========== GEMINI API CONFIGURATION ==========", SERVICE_NAME);
+        log.info("{} URL: {}", SERVICE_NAME, geminiApiUrl != null && !geminiApiUrl.isBlank() ? geminiApiUrl : "NOT_SET");
+        log.info("{} API Key: {}", SERVICE_NAME, maskedKey);
+        log.info("{} URL configured: {}", SERVICE_NAME, geminiApiUrl != null && !geminiApiUrl.isBlank());
+        log.info("{} Key configured: {}", SERVICE_NAME, geminiApiKey != null && !geminiApiKey.isBlank());
+        log.info("{} Is Configured (Ready): {}", SERVICE_NAME, isConfigured);
+        log.info("{} ============================================", SERVICE_NAME);
 
         if (!isConfigured) {
-            log.warn("{} ⚠ Gemini API credentials NOT configured. Please set GEMINI_API_URL and GEMINI_API_KEY environment variables.", SERVICE_NAME);
+            log.warn("{} ⚠ Gemini API credentials NOT configured. Please set GEMINI_API_URL and GEMINI_API_KEY in config server.", SERVICE_NAME);
+            log.warn("{} ⚠ Falling back to MOCK responses for all requests.", SERVICE_NAME);
         } else {
-            log.info("{} ✓ Gemini API configuration loaded successfully", SERVICE_NAME);
+            log.info("{} ✓ Gemini API configuration loaded successfully - LIVE MODE ENABLED", SERVICE_NAME);
         }
     }
 
@@ -133,7 +141,7 @@ public class GeminiService {
                         .block();
 
                 long duration = System.currentTimeMillis() - startTime;
-                log.info("{}  Successfully received response from Gemini API (duration={}ms, responseLength={})",
+                log.info("{} Successfully received response from Gemini API (duration={}ms, responseLength={})",
                         SERVICE_NAME, duration, response != null ? response.length() : 0);
 
                 if (response == null) {

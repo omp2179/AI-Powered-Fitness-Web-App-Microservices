@@ -4,19 +4,25 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fitness.aiservice.model.Activity;
 import com.fitness.aiservice.model.Recommendation;
+import com.fitness.aiservice.repository.ActivityRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 @AllArgsConstructor
 public class ActivityAIService {
     private final GeminiService geminiService;
+    private final ActivityRepository activityRepository;
     private static final String SERVICE_NAME = "[ActivityAIService]";
 
     public Recommendation generateRecommendation(Activity activity) {
@@ -33,15 +39,72 @@ public class ActivityAIService {
                 log.error("{} Invalid activity data: type or duration is null", SERVICE_NAME);
                 throw new IllegalArgumentException("Activity type and duration are required");
             }
+            String currentActivityId = activity.getId();
 
-            // Step 2: Create prompt for activity
-            log.info("{} Creating prompt for activity type: {}", SERVICE_NAME, activity.getType());
-            String prompt = createPromptForActivity(activity);
+            // Step 2: Fetch last 7 days activities from LOCAL MongoDB (via Kafka events)
+            log.info("{} Querying local MongoDB for last 7 days activities for userId={}",
+                    SERVICE_NAME, activity.getUserId());
+            LocalDateTime queryAnchor = activity.getStartTime() != null ? activity.getStartTime() : LocalDateTime.now();
+            LocalDateTime end = queryAnchor;
+            LocalDateTime start = end.minusDays(7);
+
+            log.debug("{} Query parameters: userId={}, start={}, end={}",
+                    SERVICE_NAME, activity.getUserId(), start, end);
+            log.debug("{} Current activity: id={}, startTime={}, type={}, duration={}",
+                    SERVICE_NAME, activity.getId(), activity.getStartTime(),
+                    activity.getType(), activity.getDuration());
+
+            // Check total activities in DB for this user (without time filter)
+            List<Activity> allUserActivities = activityRepository.findAll().stream()
+                    .filter(a -> a.getUserId().equals(activity.getUserId()))
+                    .toList();
+            log.info("{} Total activities for userId={} in DB (no time filter): {}",
+                    SERVICE_NAME, activity.getUserId(), allUserActivities.size());
+
+            if (!allUserActivities.isEmpty()) {
+                log.debug("{} Sample activities for userId={}:", SERVICE_NAME, activity.getUserId());
+                allUserActivities.stream().limit(5).forEach(a ->
+                    log.debug("  - Activity: id={}, startTime={}, type={}, duration={}",
+                            a.getId(), a.getStartTime(), a.getType(), a.getDuration()));
+            }
+
+            List<Activity> last7DaysActivities = activityRepository.findByUserIdAndStartTimeBetween(
+                    activity.getUserId(), start, end)
+                    .stream()
+                    .filter(a -> currentActivityId == null || !currentActivityId.equals(a.getId()))
+                    .collect(Collectors.toList());
+
+            log.info("{} Retrieved {} activities from last 7 days (local DB) for userId={}",
+                    SERVICE_NAME, last7DaysActivities.size(), activity.getUserId());
+
+            if (last7DaysActivities.isEmpty()) {
+                log.warn("{} ⚠ No activities found in 7-day query!", SERVICE_NAME);
+                log.warn("{} Possible reasons: 1) startTime is null/invalid 2) startTime outside 7-day window 3) userId mismatch",
+                        SERVICE_NAME);
+                log.warn("{} Current time: {}, Query range: {} to {}",
+                        SERVICE_NAME, LocalDateTime.now(), start, end);
+                log.info("{} Falling back to last 7 recorded activities for userId={} to build AI context",
+                        SERVICE_NAME, activity.getUserId());
+                last7DaysActivities = activityRepository.findTop7ByUserIdOrderByStartTimeDesc(activity.getUserId())
+                        .stream()
+                        .filter(a -> currentActivityId == null || !currentActivityId.equals(a.getId()))
+                        .collect(Collectors.toList());
+                log.info("{} Fallback retrieved {} activities", SERVICE_NAME, last7DaysActivities.size());
+            } else {
+                log.debug("{} Sample activity startTimes from query result:", SERVICE_NAME);
+                last7DaysActivities.stream().limit(3).forEach(a ->
+                    log.debug("  - Activity id={}, startTime={}", a.getId(), a.getStartTime()));
+            }
+
+            // Step 3: Create enriched prompt with 7-day context
+            log.info("{} Creating enriched prompt with 7-day context for activity type: {}",
+                    SERVICE_NAME, activity.getType());
+            String prompt = createEnrichedPromptWithContext(activity, last7DaysActivities);
             log.info("{} Prompt created successfully, length={} characters", SERVICE_NAME, prompt.length());
             log.debug("{} Prompt preview: {}", SERVICE_NAME,
                     prompt.length() > 300 ? prompt.substring(0, 300) + "..." : prompt);
 
-            // Step 3: Request recommendations from Gemini
+            // Step 4: Request recommendations from Gemini
             log.info("{} Requesting AI recommendations from Gemini service for activityId={}",
                     SERVICE_NAME, activity.getId());
 
@@ -182,13 +245,13 @@ public class ActivityAIService {
         }
     }
 
-
-    private String createPromptForActivity(Activity activity) {
-        log.debug("{} Creating prompt for activity: type={}, duration={}, calories={}",
+    private String createEnrichedPromptWithContext(Activity activity, List<Activity> last7DaysActivities) {
+        log.debug("{} Creating enriched prompt with 7-day context for activity: type={}, duration={}, calories={}",
                  SERVICE_NAME, activity.getType(), activity.getDuration(), activity.getCaloriesBurned());
 
-        // String.format will throw if the number/types of placeholders don't match.
-        // Keep the placeholders aligned and make values null-safe.
+        // Build 7-day activity summary
+        String activityContext = buildActivityContextSummary(last7DaysActivities);
+
         String activityType = String.valueOf(activity.getType());
         int durationMinutes = activity.getDuration() == null ? 0 : activity.getDuration();
         int caloriesBurned = activity.getCaloriesBurned() == null ? 0 : activity.getCaloriesBurned();
@@ -258,7 +321,12 @@ UX WRITING RULES (CRITICAL)
 • Assume the output will be shown directly in the app UI without edits.
 
 ━━━━━━━━━━━━━━━━━━━━━━
-INPUT DATA TO ANALYZE
+USER'S 7-DAY ACTIVITY HISTORY
+━━━━━━━━━━━━━━━━━━━━━━
+%s
+
+━━━━━━━━━━━━━━━━━━━━━━
+CURRENT ACTIVITY DATA TO ANALYZE
 ━━━━━━━━━━━━━━━━━━━━━━
 Activity Type: %s
 Duration: %d minutes
@@ -266,13 +334,63 @@ Calories Burned: %d
 Additional Metrics: %s
 
 ━━━━━━━━━━━━━━━━━━━━━━
+CONTEXT-AWARE ANALYSIS REQUIREMENTS
+━━━━━━━━━━━━━━━━━━━━━━
+Based on the 7-day activity history provided above, your analysis should:
+1. Identify which muscle groups or cardio types have been NEGLECTED in the past week
+2. Assess whether the user needs REST or ACTIVE RECOVERY based on frequency and intensity
+3. Evaluate BALANCE and PERIODIZATION of their routine
+4. Suggest PROGRESSIVE OVERLOAD opportunities where appropriate
+5. Recommend TODAY'S workout that COMPLEMENTS their recent activity pattern (not duplicate)
+6. If the user has been inactive, provide gentle encouragement to restart
+7. If the user is overtraining specific areas, suggest variety or rest
+
+━━━━━━━━━━━━━━━━━━━━━━
 FINAL INSTRUCTION
 ━━━━━━━━━━━━━━━━━━━━━━
-Analyze the activity focusing on performance, improvement areas, next workout suggestions, and safety.
+Analyze the current activity in the CONTEXT of their 7-day pattern. Focus on performance, improvement areas,
+next workout suggestions that complement their history, and safety considerations based on their recent training load.
 Return ONLY the JSON object in the exact format specified above.
-""", activityType, durationMinutes, caloriesBurned, additionalMetrics);
+""", activityContext, activityType, durationMinutes, caloriesBurned, additionalMetrics);
 
-        log.debug("{} Prompt generated successfully, totalLength={} characters", SERVICE_NAME, prompt.length());
+        log.debug("{} Enriched prompt generated successfully, totalLength={} characters", SERVICE_NAME, prompt.length());
         return prompt;
+    }
+
+    private String buildActivityContextSummary(List<Activity> activities) {
+        if (activities == null || activities.isEmpty()) {
+            return "No activities recorded in the last 7 days. This is the user's first activity or they've been inactive.";
+        }
+
+        Map<String, Integer> typeCount = new HashMap<>();
+        Map<String, Integer> typeTotalMinutes = new HashMap<>();
+        int totalMinutes = 0;
+        int totalCalories = 0;
+
+        for (Activity a : activities) {
+            String type = a.getType().toString();
+            int duration = a.getDuration() != null ? a.getDuration() : 0;
+            int calories = a.getCaloriesBurned() != null ? a.getCaloriesBurned() : 0;
+
+            typeCount.merge(type, 1, Integer::sum);
+            typeTotalMinutes.merge(type, duration, Integer::sum);
+            totalMinutes += duration;
+            totalCalories += calories;
+        }
+
+        StringBuilder summary = new StringBuilder();
+        summary.append("LAST 7 DAYS SUMMARY:\n");
+        summary.append(String.format("- Total activities: %d\n", activities.size()));
+        summary.append(String.format("- Total minutes exercised: %d\n", totalMinutes));
+        summary.append(String.format("- Total calories burned: %d\n", totalCalories));
+        summary.append(String.format("- Average duration per session: %d minutes\n", totalMinutes / activities.size()));
+        summary.append("\nBREAKDOWN BY ACTIVITY TYPE:\n");
+
+        typeCount.forEach((type, count) -> {
+            int minutes = typeTotalMinutes.getOrDefault(type, 0);
+            summary.append(String.format("  • %s: %d session(s), %d total minutes\n", type, count, minutes));
+        });
+
+        return summary.toString();
     }
 }
